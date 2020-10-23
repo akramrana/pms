@@ -1,0 +1,64 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Projectid:</strong>
+  <%= @issue.projectId %>
+</p>
+
+<p>
+  <strong>Issuetypeid:</strong>
+  <%= @issue.issueTypeId %>
+</p>
+
+<p>
+  <strong>Summary:</strong>
+  <%= @issue.summary %>
+</p>
+
+<p>
+  <strong>Prioritypeid:</strong>
+  <%= @issue.prioritypeId %>
+</p>
+
+<p>
+  <strong>Duedate:</strong>
+  <%= @issue.dueDate %>
+</p>
+
+<p>
+  <strong>Assignee:</strong>
+  <%= @issue.assignee %>
+</p>
+
+<p>
+  <strong>Reporter:</strong>
+  <%= @issue.reporter %>
+</p>
+
+<p>
+  <strong>Environment:</strong>
+  <%= @issue.environment %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @issue.description %>
+</p>
+
+<p>
+  <strong>Originalestimate:</strong>
+  <%= @issue.originalEstimate %>
+</p>
+
+<p>
+  <strong>Remainestimate:</strong>
+  <%= @issue.remainEstimate %>
+</p>
+
+<p>
+  <strong>Addedtime:</strong>
+  <%= @issue.addedTime %>
+</p>
+
+<%= link_to 'Edit', edit_issue_path(@issue) %> |
+<%= link_to 'Back', issues_path %>

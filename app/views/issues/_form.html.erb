@@ -1,0 +1,77 @@
+<%= form_with(model: issue, local: true) do |form| %>
+  <% if issue.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(issue.errors.count, "error") %> prohibited this issue from being saved:</h2>
+
+      <ul>
+        <% issue.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :projectId %>
+    <%= form.number_field :projectId %>
+  </div>
+
+  <div class="field">
+    <%= form.label :issueTypeId %>
+    <%= form.number_field :issueTypeId %>
+  </div>
+
+  <div class="field">
+    <%= form.label :summary %>
+    <%= form.text_field :summary %>
+  </div>
+
+  <div class="field">
+    <%= form.label :prioritypeId %>
+    <%= form.number_field :prioritypeId %>
+  </div>
+
+  <div class="field">
+    <%= form.label :dueDate %>
+    <%= form.datetime_select :dueDate %>
+  </div>
+
+  <div class="field">
+    <%= form.label :assignee %>
+    <%= form.number_field :assignee %>
+  </div>
+
+  <div class="field">
+    <%= form.label :reporter %>
+    <%= form.number_field :reporter %>
+  </div>
+
+  <div class="field">
+    <%= form.label :environment %>
+    <%= form.text_field :environment %>
+  </div>
+
+  <div class="field">
+    <%= form.label :description %>
+    <%= form.text_field :description %>
+  </div>
+
+  <div class="field">
+    <%= form.label :originalEstimate %>
+    <%= form.text_field :originalEstimate %>
+  </div>
+
+  <div class="field">
+    <%= form.label :remainEstimate %>
+    <%= form.text_field :remainEstimate %>
+  </div>
+
+  <div class="field">
+    <%= form.label :addedTime %>
+    <%= form.datetime_select :addedTime %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

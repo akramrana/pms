@@ -1,0 +1,52 @@
+<% content_for :title, "Issues" %>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <p id="notice"><%= notice %></p>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Projectid</th>
+                            <th>Issuetypeid</th>
+                            <th>Summary</th>
+                            <th>Prioritypeid</th>
+                            <th>Duedate</th>
+                            <th>Assignee</th>
+                            <th>Reporter</th>
+                            <th>Environment</th>
+                            <th>Description</th>
+                            <th>Originalestimate</th>
+                            <th>Remainestimate</th>
+                            <th>Addedtime</th>
+                            <th colspan="3"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @issues.each do |issue| %>
+                        <tr>
+                            <td><%= issue.projectId %></td>
+                            <td><%= issue.issueTypeId %></td>
+                            <td><%= issue.summary %></td>
+                            <td><%= issue.prioritypeId %></td>
+                            <td><%= issue.dueDate %></td>
+                            <td><%= issue.assignee %></td>
+                            <td><%= issue.reporter %></td>
+                            <td><%= issue.environment %></td>
+                            <td><%= issue.description %></td>
+                            <td><%= issue.originalEstimate %></td>
+                            <td><%= issue.remainEstimate %></td>
+                            <td><%= issue.addedTime %></td>
+                            <td><%= link_to 'Show', issue %></td>
+                            <td><%= link_to 'Edit', edit_issue_path(issue) %></td>
+                            <td><%= link_to 'Destroy', issue, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                        </tr>
+                        <% end %>
+                    </tbody>
+                </table>
+                <br>
+                <%= link_to 'New Issue', new_issue_path %>
+            </div>
+        </div>
+    </div>
+</div>

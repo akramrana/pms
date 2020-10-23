@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Pms</title>
+    <title>PMS-<%= yield(:title) %></title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -79,7 +79,7 @@
                         <!-- Add icons to the links using the .nav-icon class
            with font-awesome or any other icon font library -->
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="/" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
@@ -87,7 +87,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="<%= projects_path %>" class="nav-link">
                                 <i class="nav-icon fas fa-th"></i>
                                 <p>
                                     Projects
@@ -95,7 +95,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="<%= issues_path %>" class="nav-link">
                                 <i class="nav-icon fas fa-table"></i>
                                 <p>
                                     Issues
@@ -120,7 +120,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="<%= project_types_path %>" class="nav-link">
                                 <i class="nav-icon far fa-image"></i>
                                 <p>
                                     Project Type
@@ -128,7 +128,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="<%= priority_types_path %>" class="nav-link">
                                 <i class="nav-icon far fa-envelope"></i>
                                 <p>
                                     Priority Type
@@ -155,12 +155,11 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0 text-dark">Dashboard</h1>
+                            <h1 class="m-0 text-dark"><%= yield(:title) %></h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">Dashboard v1</li>
+                                <%= render_breadcrumbs :tag => :li, :separator => "/" %>
                             </ol>
                         </div><!-- /.col -->
                     </div><!-- /.row -->
@@ -176,10 +175,10 @@
             </section>
         </div>
         <footer class="main-footer">
-            <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong>
+            <strong>Copyright &copy; 2020 <a href="http://codxplore.com">Akram Hossain</a>.</strong>
             All rights reserved.
             <div class="float-right d-none d-sm-inline-block">
-                <b>Version</b> 3.0.5
+                <b>Version</b> 1.0.0
             </div>
         </footer>
 </body>

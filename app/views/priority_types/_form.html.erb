@@ -1,0 +1,22 @@
+<%= form_with(model: priority_type, local: true) do |form| %>
+  <% if priority_type.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(priority_type.errors.count, "error") %> prohibited this priority_type from being saved:</h2>
+
+      <ul>
+        <% priority_type.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :priorityTypeName %>
+    <%= form.text_field :priorityTypeName %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

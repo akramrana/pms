@@ -11,6 +11,36 @@
     </div>
   <% end %>
 
+  <div class="field">
+    <%= form.label :username %>
+    <%= form.text_field :username %>
+  </div>
+
+  <div class="field">
+    <%= form.label :email %>
+    <%= form.text_field :email %>
+  </div>
+
+  <div class="field">
+    <%= form.label :password %>
+    <%= form.text_field :password %>
+  </div>
+
+  <div class="field">
+    <%= form.label :usertype %>
+    <%= form.number_field :usertype %>
+  </div>
+
+  <div class="field">
+    <%= form.label :createTime %>
+    <%= form.datetime_select :createTime %>
+  </div>
+
+  <div class="field">
+    <%= form.label :updateTime %>
+    <%= form.datetime_select :updateTime %>
+  </div>
+
   <div class="actions">
     <%= form.submit %>
   </div>

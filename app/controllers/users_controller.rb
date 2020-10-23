@@ -1,9 +1,13 @@
 class UsersController < ApplicationController
+
+  add_breadcrumb "User", :users_path
+
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   # GET /users
   # GET /users.json
   def index
+    add_breadcrumb "index", users_path
     @users = User.all
   end
 
@@ -69,6 +73,6 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.fetch(:user, {})
+      params.require(:user).permit(:username, :email, :password, :usertype, :createTime, :updateTime)
     end
 end

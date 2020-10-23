@@ -1,4 +1,4 @@
-<% content_for :title, "Issue Types" %>
+<% content_for :title, "Priority Types" %>
 <div class="row">
     <div class="col-md-12">
         <div class="card">
@@ -7,18 +7,18 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>Issuetypename</th>
+                            <th>Prioritytypename</th>
                             <th colspan="3"></th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        <% @issue_types.each do |issue_type| %>
+                        <% @priority_types.each do |priority_type| %>
                         <tr>
-                            <td><%= issue_type.issueTypeName %></td>
-                            <td><%= link_to 'Show', issue_type %></td>
-                            <td><%= link_to 'Edit', edit_issue_type_path(issue_type) %></td>
-                            <td><%= link_to 'Destroy', issue_type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                            <td><%= priority_type.priorityTypeName %></td>
+                            <td><%= link_to 'Show', priority_type %></td>
+                            <td><%= link_to 'Edit', edit_priority_type_path(priority_type) %></td>
+                            <td><%= link_to 'Destroy', priority_type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
                         </tr>
                         <% end %>
                     </tbody>
@@ -26,7 +26,7 @@
 
                 <br>
 
-                <%= link_to 'New Issue Type', new_issue_type_path %>
+                <%= link_to 'New Priority Type', new_priority_type_path %>
 
             </div>
         </div>

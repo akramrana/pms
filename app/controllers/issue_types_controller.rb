@@ -1,9 +1,11 @@
 class IssueTypesController < ApplicationController
   before_action :set_issue_type, only: [:show, :edit, :update, :destroy]
 
+  add_breadcrumb "Issue Type", :issue_types_path
   # GET /issue_types
   # GET /issue_types.json
   def index
+    add_breadcrumb "index", issue_types_path
     @issue_types = IssueType.all
   end
 

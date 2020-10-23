@@ -1,0 +1,14 @@
+
+.breadcrumb li::before {
+    display: inline-block;
+    color: #6c757d;
+}
+
+.breadcrumb li {
+    padding-left: .5rem;
+    padding-right: .5rem;
+}
+
+.breadcrumb li {
+    color: #6c757d;
+}
