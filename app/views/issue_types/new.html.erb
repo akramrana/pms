@@ -1,5 +1,10 @@
-<h1>New Issue Type</h1>
-
-<%= render 'form', issue_type: @issue_type %>
-
-<%= link_to 'Back', issue_types_path %>
+<% content_for :title, "New Issue Type" %>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <%= render 'form', issue_type: @issue_type %>
+            </div>
+        </div>
+    </div>
+</div>

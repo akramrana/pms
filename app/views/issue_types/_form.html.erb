@@ -1,22 +1,24 @@
 <%= form_with(model: issue_type, local: true) do |form| %>
-  <% if issue_type.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(issue_type.errors.count, "error") %> prohibited this issue_type from being saved:</h2>
-
-      <ul>
+<% if issue_type.errors.any? %>
+<div id="error_explanation">
+    <h2><%= pluralize(issue_type.errors.count, "error") %> prohibited this from being saved:</h2>
+    <ul>
         <% issue_type.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
+        <li><%= message %></li>
         <% end %>
-      </ul>
+    </ul>
+</div>
+<% end %>
+
+<div class="row">
+    <div class="col-6">
+        <%= form.label :issueTypeName, "Issue Type Name" %>
+        <%= form.text_field :issueTypeName, class: 'form-control' %>
     </div>
-  <% end %>
+</div>
+<div class="clearfix">&nbsp;</div>
+<div class="form-group">
+    <%= form.submit 'Submit', :class => "btn btn-primary" %>
+</div>
 
-  <div class="field">
-    <%= form.label :issueTypeName %>
-    <%= form.text_field :issueTypeName %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
 <% end %>

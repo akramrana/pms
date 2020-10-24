@@ -4,11 +4,14 @@
         <div class="card">
             <div class="card-body">
                 <p id="notice"><%= notice %></p>
-                <table class="table table-hover">
+                <p class="float-right">
+                    <%= link_to 'New Issue Type', new_issue_type_path, class:"btn btn-success" %>
+                </p>
+                <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
-                            <th>Issuetypename</th>
-                            <th colspan="3"></th>
+                            <th>Issue Type Name</th>
+                            <th></th>
                         </tr>
                     </thead>
 
@@ -16,18 +19,15 @@
                         <% @issue_types.each do |issue_type| %>
                         <tr>
                             <td><%= issue_type.issueTypeName %></td>
-                            <td><%= link_to 'Show', issue_type %></td>
-                            <td><%= link_to 'Edit', edit_issue_type_path(issue_type) %></td>
-                            <td><%= link_to 'Destroy', issue_type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                            <td>
+                                <%= link_to fa_icon("eye"), issue_type %>
+                                <%= link_to fa_icon("pen"), edit_issue_type_path(issue_type) %>
+                                <%= link_to fa_icon("trash"), issue_type, method: :delete, data: { confirm: 'Are you sure?' } %>
+                            </td>
                         </tr>
                         <% end %>
                     </tbody>
                 </table>
-
-                <br>
-
-                <%= link_to 'New Issue Type', new_issue_type_path %>
-
             </div>
         </div>
     </div>

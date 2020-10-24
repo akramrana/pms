@@ -1,6 +1,11 @@
-<h1>Editing Issue Type</h1>
+<% content_for :title, "Update: "+@issue_type.issueTypeName %>
 
-<%= render 'form', issue_type: @issue_type %>
-
-<%= link_to 'Show', @issue_type %> |
-<%= link_to 'Back', issue_types_path %>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <%= render 'form', issue_type: @issue_type %>
+            </div>
+        </div>
+    </div>
+</div>

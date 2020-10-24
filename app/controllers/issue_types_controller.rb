@@ -5,22 +5,26 @@ class IssueTypesController < ApplicationController
   # GET /issue_types
   # GET /issue_types.json
   def index
-    add_breadcrumb "index", issue_types_path
+    add_breadcrumb "List", issue_types_path
     @issue_types = IssueType.all
   end
 
   # GET /issue_types/1
   # GET /issue_types/1.json
   def show
+    add_breadcrumb @issue_type.issueTypeName
   end
 
   # GET /issue_types/new
   def new
+    add_breadcrumb "New"
     @issue_type = IssueType.new
   end
 
   # GET /issue_types/1/edit
   def edit
+    add_breadcrumb @issue_type.issueTypeName, issue_type_path
+    add_breadcrumb "Update"
   end
 
   # POST /issue_types
