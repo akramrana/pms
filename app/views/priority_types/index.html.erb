@@ -4,11 +4,14 @@
         <div class="card">
             <div class="card-body">
                 <p id="notice"><%= notice %></p>
+                <p class="float-right">
+                    <%= link_to 'New Priority Type', new_priority_type_path, class:"btn btn-success" %>
+                </p>
                 <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th>Prioritytypename</th>
-                            <th colspan="3"></th>
+                            <th></th>
                         </tr>
                     </thead>
 
@@ -16,17 +19,15 @@
                         <% @priority_types.each do |priority_type| %>
                         <tr>
                             <td><%= priority_type.priorityTypeName %></td>
-                            <td><%= link_to 'Show', priority_type %></td>
-                            <td><%= link_to 'Edit', edit_priority_type_path(priority_type) %></td>
-                            <td><%= link_to 'Destroy', priority_type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                            <td>
+                                <%= link_to fa_icon("eye"), priority_type %>
+                                <%= link_to fa_icon("pen"), edit_priority_type_path(priority_type) %>
+                                <%= link_to fa_icon("trash"), priority_type, method: :delete, data: { confirm: 'Are you sure?' } %>
+                            </td>
                         </tr>
                         <% end %>
                     </tbody>
                 </table>
-
-                <br>
-
-                <%= link_to 'New Priority Type', new_priority_type_path %>
 
             </div>
         </div>

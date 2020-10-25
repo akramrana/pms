@@ -1,6 +1,10 @@
-<h1>Editing Project Type</h1>
-
-<%= render 'form', project_type: @project_type %>
-
-<%= link_to 'Show', @project_type %> |
-<%= link_to 'Back', project_types_path %>
+<% content_for :title, "Update: "+@project_type.typeName %>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <%= render 'form', project_type: @project_type %>
+            </div>
+        </div>
+    </div>
+</div>

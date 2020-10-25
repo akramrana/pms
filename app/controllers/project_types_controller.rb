@@ -5,22 +5,26 @@ class ProjectTypesController < ApplicationController
   # GET /project_types
   # GET /project_types.json
   def index
-    add_breadcrumb "index", project_types_path
+    add_breadcrumb "List", project_types_path
     @project_types = ProjectType.all
   end
 
   # GET /project_types/1
   # GET /project_types/1.json
   def show
+    add_breadcrumb @project_type.typeName
   end
 
   # GET /project_types/new
   def new
+    add_breadcrumb "New"
     @project_type = ProjectType.new
   end
 
   # GET /project_types/1/edit
   def edit
+    add_breadcrumb @project_type.typeName, project_type_path
+    add_breadcrumb "Update"
   end
 
   # POST /project_types

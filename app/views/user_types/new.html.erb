@@ -1,5 +1,10 @@
-<h1>New User Type</h1>
-
-<%= render 'form', user_type: @user_type %>
-
-<%= link_to 'Back', user_types_path %>
+<% content_for :title, "New User Type" %>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <%= render 'form', user_type: @user_type %>
+            </div>
+        </div>
+    </div>
+</div>

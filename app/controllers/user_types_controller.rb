@@ -5,22 +5,26 @@ class UserTypesController < ApplicationController
   # GET /user_types
   # GET /user_types.json
   def index
-    add_breadcrumb "index", user_types_path
+    add_breadcrumb "List", user_types_path
     @user_types = UserType.all
   end
 
   # GET /user_types/1
   # GET /user_types/1.json
   def show
+    add_breadcrumb @user_type.userTypeName
   end
 
   # GET /user_types/new
   def new
+    add_breadcrumb "New"
     @user_type = UserType.new
   end
 
   # GET /user_types/1/edit
   def edit
+    add_breadcrumb @user_type.userTypeName, user_type_path
+    add_breadcrumb "Update"
   end
 
   # POST /user_types
@@ -71,6 +75,6 @@ class UserTypesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_type_params
-      params.require(:user_type).permit(:user_type_name)
+      params.require(:user_type).permit(:userTypeName)
     end
 end

@@ -1,22 +1,23 @@
 <%= form_with(model: project_type, local: true) do |form| %>
-  <% if project_type.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(project_type.errors.count, "error") %> prohibited this project_type from being saved:</h2>
+<% if project_type.errors.any? %>
+<div id="error_explanation">
+    <h2><%= pluralize(project_type.errors.count, "error") %> prohibited this from being saved:</h2>
 
-      <ul>
+    <ul>
         <% project_type.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
+        <li><%= message %></li>
         <% end %>
-      </ul>
+    </ul>
+</div>
+<% end %>
+<div class="row">
+    <div class="col-6">
+        <%= form.label :typeName, "Project Type Name" %>
+        <%= form.text_field :typeName,class: 'form-control' %>
     </div>
-  <% end %>
-
-  <div class="field">
-    <%= form.label :typeName %>
-    <%= form.text_field :typeName %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
+</div>
+<div class="clearfix">&nbsp;</div>
+<div class="form-group">
+    <%= form.submit 'Submit', :class => "btn btn-primary" %>
+</div>
 <% end %>

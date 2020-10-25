@@ -5,22 +5,26 @@ class PriorityTypesController < ApplicationController
   # GET /priority_types
   # GET /priority_types.json
   def index
-    add_breadcrumb "index", priority_types_path
+    add_breadcrumb "List", priority_types_path
     @priority_types = PriorityType.all
   end
 
   # GET /priority_types/1
   # GET /priority_types/1.json
   def show
+    add_breadcrumb @priority_type.priorityTypeName
   end
 
   # GET /priority_types/new
   def new
+    add_breadcrumb "New"
     @priority_type = PriorityType.new
   end
 
   # GET /priority_types/1/edit
   def edit
+    add_breadcrumb @priority_type.priorityTypeName, priority_type_path
+    add_breadcrumb "Update"
   end
 
   # POST /priority_types

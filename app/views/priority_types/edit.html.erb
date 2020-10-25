@@ -1,6 +1,10 @@
-<h1>Editing Priority Type</h1>
-
-<%= render 'form', priority_type: @priority_type %>
-
-<%= link_to 'Show', @priority_type %> |
-<%= link_to 'Back', priority_types_path %>
+<% content_for :title, "Update: "+@priority_type.priorityTypeName %>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <%= render 'form', priority_type: @priority_type %>
+            </div>
+        </div>
+    </div>
+</div>
