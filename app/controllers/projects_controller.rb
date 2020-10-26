@@ -1,32 +1,39 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: [:show, :edit, :update, :destroy]
+  before_action :prepare_priority_type
+  before_action :prepare_user_list
 
   add_breadcrumb "Project", :projects_path
   # GET /projects
   # GET /projects.json
   def index
-    add_breadcrumb "index", projects_path
-    @projects = Project.all
+    add_breadcrumb "List", projects_path
+    @projects = Project.order('id DESC').all
   end
 
   # GET /projects/1
   # GET /projects/1.json
   def show
+    add_breadcrumb @project.projectName
   end
 
   # GET /projects/new
   def new
+    add_breadcrumb "New"
     @project = Project.new
   end
 
   # GET /projects/1/edit
   def edit
+    add_breadcrumb @project.projectName, project_path
+    add_breadcrumb "Update"
   end
 
   # POST /projects
   # POST /projects.json
   def create
     @project = Project.new(project_params)
+    @project.time = Time.now
 
     respond_to do |format|
       if @project.save
@@ -71,6 +78,15 @@ class ProjectsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def project_params
-      params.require(:project).permit(:projectName, :projectKey, :projectLeader, :projectPriority, :projectDetails, :time)
+      params.require(:project).permit(:projectName, :projectKey, :projectLeader, :projectPriority, :projectDetails)
     end
+
+    def prepare_priority_type
+      @priorityTypes = PriorityType.all
+    end
+
+    def prepare_user_list
+      @leaders = User.where(usertype: '2').all
+    end
+
 end

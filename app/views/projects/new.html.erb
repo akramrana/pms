@@ -1,5 +1,10 @@
-<h1>New Project</h1>
-
-<%= render 'form', project: @project %>
-
-<%= link_to 'Back', projects_path %>
+<% content_for :title, "New Project" %>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <%= render 'form', project: @project %>
+            </div>
+        </div>
+    </div>
+</div>

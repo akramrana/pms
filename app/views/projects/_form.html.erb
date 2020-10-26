@@ -1,47 +1,46 @@
 <%= form_with(model: project, local: true) do |form| %>
-  <% if project.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(project.errors.count, "error") %> prohibited this project from being saved:</h2>
+<% if project.errors.any? %>
+<div id="error_explanation">
+    <h2><%= pluralize(project.errors.count, "error") %> prohibited this from being saved:</h2>
 
-      <ul>
+    <ul>
         <% project.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
+        <li><%= message %></li>
         <% end %>
-      </ul>
+    </ul>
+</div>
+<% end %>
+
+<div class="row">
+    <div class="col-6">
+        <%= form.label :projectName, "Name" %>
+        <%= form.text_field :projectName, class: 'form-control' %>
     </div>
-  <% end %>
 
-  <div class="field">
-    <%= form.label :projectName %>
-    <%= form.text_field :projectName %>
-  </div>
+    <div class="col-6">
+        <%= form.label :projectKey, "Key" %>
+        <%= form.text_field :projectKey, class: 'form-control' %>
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        <%= form.label :projectLeader, "Leader" %>
+        <%= form.collection_select(:projectLeader, @leaders, :id, :username, {:include_blank => "Please Select"}, {:class => "form-control"}) %>
+    </div>
 
-  <div class="field">
-    <%= form.label :projectKey %>
-    <%= form.text_field :projectKey %>
-  </div>
-
-  <div class="field">
-    <%= form.label :projectLeader %>
-    <%= form.number_field :projectLeader %>
-  </div>
-
-  <div class="field">
-    <%= form.label :projectPriority %>
-    <%= form.number_field :projectPriority %>
-  </div>
-
-  <div class="field">
-    <%= form.label :projectDetails %>
-    <%= form.text_field :projectDetails %>
-  </div>
-
-  <div class="field">
-    <%= form.label :time %>
-    <%= form.datetime_select :time %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
+    <div class="col-6">
+        <%= form.label :projectPriority, "Priority" %>
+        <%= form.collection_select(:projectPriority, @priorityTypes, :id, :priorityTypeName, {:include_blank => "Please Select"}, {:class => "form-control"}) %>
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        <%= form.label :projectDetails, "Description" %>
+        <%= form.text_area :projectDetails, class: 'form-control' %>
+    </div>
+</div>
+<div class="clearfix">&nbsp;</div>
+<div class="form-group">
+    <%= form.submit 'Submit', :class => "btn btn-primary" %>
+</div>
 <% end %>
