@@ -1,64 +1,66 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Projectid:</strong>
-  <%= @issue.projectId %>
-</p>
-
-<p>
-  <strong>Issuetypeid:</strong>
-  <%= @issue.issueTypeId %>
-</p>
-
-<p>
-  <strong>Summary:</strong>
-  <%= @issue.summary %>
-</p>
-
-<p>
-  <strong>Prioritypeid:</strong>
-  <%= @issue.prioritypeId %>
-</p>
-
-<p>
-  <strong>Duedate:</strong>
-  <%= @issue.dueDate %>
-</p>
-
-<p>
-  <strong>Assignee:</strong>
-  <%= @issue.assignee %>
-</p>
-
-<p>
-  <strong>Reporter:</strong>
-  <%= @issue.reporter %>
-</p>
-
-<p>
-  <strong>Environment:</strong>
-  <%= @issue.environment %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @issue.description %>
-</p>
-
-<p>
-  <strong>Originalestimate:</strong>
-  <%= @issue.originalEstimate %>
-</p>
-
-<p>
-  <strong>Remainestimate:</strong>
-  <%= @issue.remainEstimate %>
-</p>
-
-<p>
-  <strong>Addedtime:</strong>
-  <%= @issue.addedTime %>
-</p>
-
-<%= link_to 'Edit', edit_issue_path(@issue) %> |
-<%= link_to 'Back', issues_path %>
+<% content_for :title, @issue.summary %>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <p id="notice"><%= notice %></p>
+                <p class="float-right">
+                    <%= link_to 'Update', edit_issue_path(@issue), class: "btn btn-primary" %>
+                    <%= link_to 'Back', issues_path, class: "btn btn-info" %>
+                </p>
+                <table class="table table-striped table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Project</th>
+                            <td><%= @issue.project.projectName %></td>
+                        </tr>
+                        <tr>
+                            <th>Issue Type</th>
+                            <td><%= @issue.issueType.issueTypeName %></td>
+                        </tr>
+                        <tr>
+                            <th>Summary</th>
+                            <td><%= @issue.summary %></td>
+                        </tr>
+                        <tr>
+                            <th>Priority Type</th>
+                            <td><%= @issue.priorityType.priorityTypeName %></td>
+                        </tr>
+                        <tr>
+                            <th>Due Date</th>
+                            <td><%= @issue.dueDate %></td>
+                        </tr>
+                        <tr>
+                            <th>Assignee</th>
+                            <td><%= @issue.assigneeUser.username %></td>
+                        </tr>
+                        <tr>
+                            <th>Reporter</th>
+                            <td><%= @issue.reporterUser.username %></td>
+                        </tr>
+                        <tr>
+                            <th>Environment</th>
+                            <td><%= @issue.environment %></td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td><%= @issue.description %></td>
+                        </tr>
+                        <tr>
+                            <th>Original Estimate</th>
+                            <td><%= @issue.originalEstimate %></td>
+                        </tr>
+                        <tr>
+                            <th>Remain Estimate</th>
+                            <td><%= @issue.remainEstimate %></td>
+                        </tr>
+                        <tr>
+                            <th>Added Time</th>
+                            <td><%= @issue.addedTime %></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

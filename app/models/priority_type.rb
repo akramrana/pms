@@ -3,6 +3,7 @@ class PriorityType < ActiveRecord::Base
     self.primary_key = 'id'
 
     has_many :projects
+    has_many :issues
     
     validates :priorityTypeName, :presence => true
 

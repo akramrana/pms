@@ -1,47 +1,40 @@
 <%= form_with(model: user, local: true) do |form| %>
-  <% if user.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
+<% if user.errors.any? %>
+<div id="error_explanation">
+  <h2><%= pluralize(user.errors.count, "error") %> prohibited this form being saved:</h2>
 
-      <ul>
-        <% user.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <ul>
+    <% user.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
 
-  <div class="field">
+<div class="row">
+  <div class="col-6">
     <%= form.label :username %>
-    <%= form.text_field :username %>
+    <%= form.text_field :username, class: 'form-control' %>
   </div>
 
-  <div class="field">
+  <div class="col-6">
     <%= form.label :email %>
-    <%= form.text_field :email %>
+    <%= form.text_field :email, class: 'form-control' %>
   </div>
 
-  <div class="field">
-    <%= form.label :password %>
-    <%= form.text_field :password %>
+  <div class="col-6">
+    <%= form.label :password_hash %>
+    <%= form.password_field :password_hash, class: 'form-control' %>
   </div>
 
-  <div class="field">
-    <%= form.label :usertype %>
-    <%= form.number_field :usertype %>
+  <div class="col-6">
+    <%= form.label :usertype, "User Type" %>
+    <%= form.collection_select(:usertype, @usertypes, :id, :userTypeName, {:include_blank => "Please Select"}, {:class => "form-control"}) %>
   </div>
+</div>
+<div class="clearfix">&nbsp;</div>
+<div class="form-group">
+  <%= form.submit 'Submit', :class => "btn btn-primary" %>
+</div>
 
-  <div class="field">
-    <%= form.label :createTime %>
-    <%= form.datetime_select :createTime %>
-  </div>
-
-  <div class="field">
-    <%= form.label :updateTime %>
-    <%= form.datetime_select :updateTime %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
 <% end %>

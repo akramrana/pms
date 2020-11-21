@@ -4,7 +4,9 @@ class Project < ActiveRecord::Base
 
     validates :projectName, :projectKey, :projectLeader, :projectPriority, :presence => true
 
-    belongs_to :priorityType, foreign_key: :id, optional: true
-    belongs_to :user, foreign_key: :id, optional: true
+    belongs_to :priorityType, foreign_key: :projectPriority, optional: true
+    belongs_to :user, foreign_key: :projectLeader, optional: true
+    
+    has_many :issues
 
 end

@@ -1,34 +1,59 @@
-<p id="notice"><%= notice %></p>
+<% content_for :title, @user.username %>
 
-<p>
-  <strong>Username:</strong>
-  <%= @user.username %>
-</p>
-
-<p>
-  <strong>Email:</strong>
-  <%= @user.email %>
-</p>
-
-<p>
-  <strong>Password:</strong>
-  <%= @user.password %>
-</p>
-
-<p>
-  <strong>Usertype:</strong>
-  <%= @user.usertype %>
-</p>
-
-<p>
-  <strong>Createtime:</strong>
-  <%= @user.createTime %>
-</p>
-
-<p>
-  <strong>Updatetime:</strong>
-  <%= @user.updateTime %>
-</p>
-
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <p id="notice"><%= notice %></p>
+        <p class="float-right">
+          <%= link_to 'Update', edit_user_path(@user), class: "btn btn-primary" %>
+          <%= link_to 'Back', users_path, class: "btn btn-info" %>
+        </p>
+        <table class="table table-striped table-bordered">
+          <tbody>
+            <tr>
+              <th>
+                Username
+              </th>
+              <td>
+                <%= @user.username %>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Email
+              </th>
+              <td>
+                <%= @user.email %>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                User Type
+              </th>
+              <td>
+                <%= @user.userType.userTypeName %>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Created At
+              </th>
+              <td>
+                <%= @user.createTime %>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Updated At
+              </th>
+              <td>
+                <%= @user.updateTime %>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
