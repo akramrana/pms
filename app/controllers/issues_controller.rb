@@ -2,7 +2,7 @@ class IssuesController < ApplicationController
   
   add_breadcrumb "Issue", :issues_path
 
-  before_action :set_issue, only: [:show, :edit, :update, :destroy]
+  before_action :set_issue, only: [:show, :edit, :update, :destroy, :board_list]
   before_action :prepare_user_list
   before_action :prepare_priority_type
   before_action :prepare_issue_type
@@ -25,12 +25,18 @@ class IssuesController < ApplicationController
   def new
     add_breadcrumb "New"
     @issue = Issue.new
+    @boards = []
+    @issueBoardId = '';
   end
 
   # GET /issues/1/edit
   def edit
     add_breadcrumb @issue.id, issue_path
     add_breadcrumb "Update"
+    @boards = Board.where(:projectId => @issue.projectId)
+    @boardissue = BoardIssue.where(:issueId => @issue.id).first
+    @issueBoardId = @boardissue.boardId;
+    #Rails.logger.debug @boardissue.inspect
   end
 
   # POST /issues
@@ -38,9 +44,17 @@ class IssuesController < ApplicationController
   def create
     @issue = Issue.new(issue_params)
     @issue.addedTime = Time.now
+    @boards = []
+    @issueBoardId = '';
 
     respond_to do |format|
       if @issue.save
+        # Rails.logger.debug params[:issue][:boardId].inspect
+        @boardIssue = BoardIssue.new()
+        @boardIssue.boardId = params[:issue][:boardId]
+        @boardIssue.issueId = @issue.id
+        @boardIssue.save
+
         format.html { redirect_to @issue, notice: 'Issue was successfully created.' }
         format.json { render :show, status: :created, location: @issue }
       else
@@ -53,8 +67,15 @@ class IssuesController < ApplicationController
   # PATCH/PUT /issues/1
   # PATCH/PUT /issues/1.json
   def update
+    @boards = Board.where(:projectId => @issue.projectId)
     respond_to do |format|
       if @issue.update(issue_params)
+        BoardIssue.where(issueId: @issue.id).destroy_all
+        @boardIssue = BoardIssue.new()
+        @boardIssue.boardId = params[:issue][:boardId]
+        @boardIssue.issueId = @issue.id
+        @boardIssue.save
+
         format.html { redirect_to @issue, notice: 'Issue was successfully updated.' }
         format.json { render :show, status: :ok, location: @issue }
       else
@@ -74,6 +95,13 @@ class IssuesController < ApplicationController
     end
   end
 
+  def board_list
+    respond_to do |format|
+      @boards = Board.where(:projectId => params[:id])
+      format.json{ render :json => @boards }
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_issue
@@ -82,7 +110,7 @@ class IssuesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def issue_params
-      params.require(:issue).permit(:projectId, :issueTypeId, :summary, :priorityTypeId, :dueDate, :assignee, :reporter, :environment, :description, :originalEstimate, :remainEstimate)
+      params.require(:issue).permit(:projectId, :issueTypeId, :summary, :priorityTypeId, :dueDate, :assignee, :reporter, :environment, :description, :originalEstimate, :remainEstimate, :boardId)
     end
 
     def prepare_priority_type

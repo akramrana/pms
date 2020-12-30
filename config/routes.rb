@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   resources :projects
   resources :issues
   resources :boards
+
+  get 'issues/:id/board_list', :to => 'issues#board_list'
   
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

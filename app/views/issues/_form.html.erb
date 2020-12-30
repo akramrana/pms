@@ -1,11 +1,15 @@
 <%= form_with(model: issue, local: true) do |form| %>
 <% if issue.errors.any? %>
 <div id="error_explanation">
-    <h2><%= pluralize(issue.errors.count, "error") %> prohibited this from being saved:</h2>
+    <h2>
+        <%= pluralize(issue.errors.count, "error" ) %> prohibited this from being saved:
+    </h2>
 
     <ul>
         <% issue.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+        <li>
+            <%= message %>
+        </li>
         <% end %>
     </ul>
 </div>
@@ -17,61 +21,75 @@
         <%= form.label :summary %>
         <%= form.text_field :summary, class: 'form-control' %>
     </div>
+</div>
+<div class="row">
     <div class="col-6">
         <%= form.label :projectId, "Project" %>
-        <%= form.collection_select(:projectId, @projects, :id, :projectName, {:include_blank => "Please Select"}, {:class => "form-control"}) %>
-    </div>
-</div>
-<div class="row">
-    <div class="col-6">
-        <%= form.label :issueTypeId, "Issue Type" %>
-        <%= form.collection_select(:issueTypeId, @issueTypes, :id, :issueTypeName, {:include_blank => "Please Select"}, {:class => "form-control"}) %>
-    </div>
-    <div class="col-6">
-        <%= form.label :priorityTypeId, "Priority Type" %>
-        <%= form.collection_select(:priorityTypeId, @priorityTypes, :id, :priorityTypeName, {:include_blank => "Please Select"}, {:class => "form-control"}) %>
-    </div>
-</div>
-<div class="row">
-    <div class="col-6">
-        <%= form.label :dueDate, "Due Date" %>
-        <%= form.date_select :dueDate, {},{:class => 'form-control'} %>
-    </div>
+        <%= form.collection_select(:projectId, @projects, :id, :projectName, {:include_blank=> "Please
+            Select"},{:class => "form-control",:onchange => "site.getBoards(this.value)"}) %>
+        </div>
+        <div class="col-6">
+            <%= form.label :boardId, "Board" %>
+            <%= form.collection_select(:boardId, @boards, :id, :boardName,{
+                :selected => @issueBoardId,
+                :include_blank=> "Please Select"
+            },{:class => "form-control"}) %>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <%= form.label :issueTypeId, "Issue Type" %>
+                <%= form.collection_select(:issueTypeId, @issueTypes, :id, :issueTypeName, {:include_blank=>
+                    "Please Select"}, {:class => "form-control"}) %>
+                </div>
+                <div class="col-6">
+                    <%= form.label :priorityTypeId, "Priority Type" %>
+                    <%= form.collection_select(:priorityTypeId, @priorityTypes, :id, :priorityTypeName,
+                    {:include_blank=> "Please Select"}, {:class => "form-control"}) %>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <%= form.label :dueDate, "Due Date" %>
+                    <%= form.text_field :dueDate, class: 'form-control datepicker' %>
+                </div>
 
-    <div class="col-6">
-        <%= form.label :assignee %>
-        <%= form.collection_select(:assignee, @users, :id, :username, {:include_blank => "Please Select"}, {:class => "form-control"}) %>
-    </div>
-</div>
-<div class="row">
-    <div class="col-6">
-        <%= form.label :reporter %>
-        <%= form.collection_select(:reporter, @users, :id, :username, {:include_blank => "Please Select"}, {:class => "form-control"}) %>
-    </div>
-    <div class="col-6">
-        <%= form.label :environment %>
-        <%= form.text_field :environment, class: 'form-control' %>
-    </div>
-</div>
-<div class="row">
-    <div class="col-6">
-        <%= form.label :originalEstimate, "Original Estimate" %>
-        <%= form.text_field :originalEstimate, class: 'form-control' %>
-    </div>
-    <div class="col-6">
-        <%= form.label :remainEstimate, "Remain Estimate" %>
-        <%= form.text_field :remainEstimate, class: 'form-control' %>
-    </div>
-</div>
-<div class="row">
-    
-    <div class="col-6">
-        <%= form.label :description %>
-        <%= form.text_area :description, class: 'form-control' %>
-    </div>
-</div>
-<div class="clearfix">&nbsp;</div>
-<div class="form-group">
-    <%= form.submit 'Submit', :class => "btn btn-primary" %>
-</div>
-<% end %>
+                <div class="col-6">
+                    <%= form.label :assignee %>
+                    <%= form.collection_select(:assignee, @users, :id, :username, {:include_blank=> "Please
+                        Select"}, {:class => "form-control"}) %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <%= form.label :reporter %>
+                        <%= form.collection_select(:reporter, @users, :id, :username, {:include_blank=> "Please
+                            Select"}, {:class => "form-control"}) %>
+                        </div>
+                        <div class="col-6">
+                            <%= form.label :environment %>
+                            <%= form.text_field :environment, class: 'form-control' %>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <%= form.label :originalEstimate, "Original Estimate" %>
+                            <%= form.text_field :originalEstimate, class: 'form-control' %>
+                        </div>
+                        <div class="col-6">
+                            <%= form.label :remainEstimate, "Remain Estimate" %>
+                            <%= form.text_field :remainEstimate, class: 'form-control' %>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-6">
+                            <%= form.label :description %>
+                            <%= form.text_area :description, class: 'form-control' %>
+                        </div>
+                    </div>
+                    <div class="clearfix">&nbsp;</div>
+                    <div class="form-group">
+                        <%= form.submit 'Submit' , :class=> "btn btn-primary" %>
+                    </div>
+                    <% end %>

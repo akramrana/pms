@@ -2,7 +2,9 @@ class Issue < ActiveRecord::Base
     self.table_name = 'issues'
     self.primary_key = 'id'
 
-    validates :projectId, :issueTypeId, :summary, :priorityTypeId, :assignee, :presence => true
+    attr_accessor :boardId
+
+    validates :projectId, :issueTypeId, :summary, :priorityTypeId, :assignee, :boardId, :presence => true
 
     belongs_to :priorityType, foreign_key: :priorityTypeId, optional: true
     belongs_to :issueType, foreign_key: :issueTypeId, optional: true

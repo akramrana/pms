@@ -8,6 +8,6 @@ class Project < ActiveRecord::Base
     belongs_to :user, foreign_key: :projectLeader, optional: true
     
     has_many :issues
-    has_many :boards
+    has_many :boards, :foreign_key => "projectId"
 
 end
