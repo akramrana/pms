@@ -39,10 +39,10 @@ class BoardsController < ApplicationController
     respond_to do |format|
       if @board.save
         format.html { redirect_to @board, notice: 'Board was successfully created.' }
-        format.json { render :show, status: :created, location: @board }
+        format.js
       else
         format.html { render :new }
-        format.json { render json: @board.errors, status: :unprocessable_entity }
+        format.js
       end
     end
   end
@@ -71,6 +71,11 @@ class BoardsController < ApplicationController
       format.html { redirect_to boards_url, notice: 'Board was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def quick_create
+    @board = Board.new
+    render :layout => false 
   end
 
   private

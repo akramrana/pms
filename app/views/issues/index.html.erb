@@ -1,55 +1,90 @@
 <% content_for :title, "Issues" %>
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-body">
-                <p id="notice"><%= notice %></p>
-                <p class="float-right">
-                    <%= link_to 'New Issue', new_issue_path, class:"btn btn-success" %>
-                </p>
-                <table class="table table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Project</th>
-                            <th>Issue Type</th>
-                            <th>Summary</th>
-                            <th>Priority Type</th>
-                            <th>Due Date</th>
-                            <th>Assignee</th>
-                            <th>Reporter</th>
-                            <th>Environment</th>
-                            <th>Description</th>
-                            <th>Original Estimate</th>
-                            <th>Remaine Etimate</th>
-                            <th>Added Time</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% @issues.each do |issue| %>
-                        <tr>
-                            <td><%= issue.project.projectName %></td>
-                            <td><%= issue.issueType.issueTypeName %></td>
-                            <td><%= issue.summary %></td>
-                            <td><%= issue.priorityType.priorityTypeName %></td>
-                            <td><%= issue.dueDate %></td>
-                            <td><%= issue.assigneeUser.username %></td>
-                            <td><%= issue.reporterUser.username %></td>
-                            <td><%= issue.environment %></td>
-                            <td><%= issue.description %></td>
-                            <td><%= issue.originalEstimate %></td>
-                            <td><%= issue.remainEstimate %></td>
-                            <td><%= issue.addedTime %></td>
-                            <td>
-                                <%= link_to fa_icon("eye"), issue %>
-                                <%= link_to fa_icon("pen"), edit_issue_path(issue) %>
-                                <%= link_to fa_icon("trash"), issue, method: :delete, data: { confirm: 'Are you sure?' } %>
-                            </td>
-                        </tr>
-                        <% end %>
-                    </tbody>
-                </table>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <p id="notice">
+                        <%= notice %>
+                    </p>
+                    <p class="float-right">
+                        <%= link_to 'New Issue' , new_issue_path, class:"btn btn-success" %>
+                    </p>
+                    <%= page_entries_info @issues %>
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Project</th>
+                                <th>Issue Type</th>
+                                <th>Summary</th>
+                                <th>Priority Type</th>
+                                <th>Due Date</th>
+                                <th>Assignee</th>
+                                <th>Reporter</th>
+                                <th>Environment</th>
+                                <th>Description</th>
+                                <th>Original Estimate</th>
+                                <th>Remaine Etimate</th>
+                                <th>Added Time</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% @issues.each do |issue| %>
+                                <tr>
+                                    <td>
+                                        <%= issue.project.projectName %>
+                                    </td>
+                                    <td>
+                                        <%= issue.issueType.issueTypeName %>
+                                    </td>
+                                    <td>
+                                        <%= issue.summary %>
+                                    </td>
+                                    <td>
+                                        <%= issue.priorityType.priorityTypeName %>
+                                    </td>
+                                    <td>
+                                        <%= issue.dueDate %>
+                                    </td>
+                                    <td>
+                                        <%= issue.assigneeUser.username %>
+                                    </td>
+                                    <td>
+                                        <%= issue.reporterUser.username %>
+                                    </td>
+                                    <td>
+                                        <%= issue.environment %>
+                                    </td>
+                                    <td>
+                                        <%= issue.description %>
+                                    </td>
+                                    <td>
+                                        <%= issue.originalEstimate %>
+                                    </td>
+                                    <td>
+                                        <%= issue.remainEstimate %>
+                                    </td>
+                                    <td>
+                                        <%= issue.addedTime %>
+                                    </td>
+                                    <td>
+                                        <%= link_to fa_icon("eye"), issue %>
+                                            <%= link_to fa_icon("pen"), edit_issue_path(issue) %>
+                                                <%= link_to fa_icon("trash"), issue, method: :delete, data: {
+                                                    confirm: 'Are you sure?' } %>
+                                    </td>
+                                </tr>
+                                <% end %>
+                        </tbody>
+                    </table>
+
+                    <div class="clearfix">&nbsp;</div>
+                    <div class="row">
+                        <div class="col-12">
+                            <%= will_paginate @clients, list_classes: %w(pagination justify-content-center) %>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>

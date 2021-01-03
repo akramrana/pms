@@ -27,6 +27,9 @@ require("custom/bootstrap-datepicker/bootstrap-datepicker.min")
 require("packs/app/site")
 
 import site from './app/site'
+import jquery from 'jquery';
+
+window.$ = window.jquery = jquery;
 window.site = site
 
 // Uncomment to copy all static images under ../images to the output folder and reference

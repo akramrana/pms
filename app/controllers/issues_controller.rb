@@ -2,7 +2,7 @@ class IssuesController < ApplicationController
   
   add_breadcrumb "Issue", :issues_path
 
-  before_action :set_issue, only: [:show, :edit, :update, :destroy, :board_list]
+  before_action :set_issue, only: [:show, :edit, :update, :destroy, :board_list, :quick_create]
   before_action :prepare_user_list
   before_action :prepare_priority_type
   before_action :prepare_issue_type
@@ -12,7 +12,7 @@ class IssuesController < ApplicationController
   # GET /issues.json
   def index
     add_breadcrumb "List", issues_path
-    @issues = Issue.order('id DESC').all
+    @issues = Issue.paginate(page: params[:page]).order('id DESC')
   end
 
   # GET /issues/1
@@ -55,11 +55,12 @@ class IssuesController < ApplicationController
         @boardIssue.issueId = @issue.id
         @boardIssue.save
 
+        
         format.html { redirect_to @issue, notice: 'Issue was successfully created.' }
-        format.json { render :show, status: :created, location: @issue }
+        format.js
       else
         format.html { render :new }
-        format.json { render json: @issue.errors, status: :unprocessable_entity }
+        format.js
       end
     end
   end
@@ -100,6 +101,14 @@ class IssuesController < ApplicationController
       @boards = Board.where(:projectId => params[:id])
       format.json{ render :json => @boards }
     end
+  end
+
+  def quick_create
+    @issue = Issue.new
+    @boards = []
+    @issueBoardId = '';
+
+    render :layout => false 
   end
 
   private

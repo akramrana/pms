@@ -1,0 +1,9 @@
+<% if @board.valid? %>
+  alert('Ok, created');
+  location.reload();
+<% else %>
+    $(".notice").remove();
+    <% @board.errors.full_messages.each do |message| %>
+    $("#error_explanation").append('<div class="notice"><%= escape_javascript(message)%></div>');
+    <% end %>
+<% end %>
