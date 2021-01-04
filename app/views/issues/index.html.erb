@@ -21,10 +21,8 @@
                                 <th>Assignee</th>
                                 <th>Reporter</th>
                                 <th>Environment</th>
-                                <th>Description</th>
                                 <th>Original Estimate</th>
-                                <th>Remaine Etimate</th>
-                                <th>Added Time</th>
+                                <th>Remaining Etimate</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -56,16 +54,10 @@
                                         <%= issue.environment %>
                                     </td>
                                     <td>
-                                        <%= issue.description %>
-                                    </td>
-                                    <td>
                                         <%= issue.originalEstimate %>
                                     </td>
                                     <td>
                                         <%= issue.remainEstimate %>
-                                    </td>
-                                    <td>
-                                        <%= issue.addedTime %>
                                     </td>
                                     <td>
                                         <%= link_to fa_icon("eye"), issue %>

@@ -31,3 +31,28 @@
 
 en:
   hello: "Hello world"
+  activerecord:
+    attributes:
+      project:
+        projectName: "Name"
+        projectKey: "Key"
+        projectLeader: "Leader"
+        projectPriority: "Priority"
+      board:
+        projectId: "Project"
+        boardName: "Board Name"
+      issue:
+        projectId: "Project"
+        boardId: "Board"
+        issueTypeId: "Issue Type"
+        priorityTypeId: "Priority Type"
+      user:
+        usertype: "User Type"
+      issue_type:
+        issueTypeName: "Issue Type"
+      project_type:
+        typeName: "Project Type"
+      priority_type:
+        priorityTypeName: "Priority Type"
+      user_type:
+        userTypeName: "User Type"

@@ -1,6 +1,7 @@
 class Project < ActiveRecord::Base
     self.table_name = 'projects'
     self.primary_key = 'id'
+    self.per_page = 10
 
     validates :projectName, :projectKey, :projectLeader, :projectPriority, :presence => true
 

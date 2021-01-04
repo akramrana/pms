@@ -1,36 +1,49 @@
 <% content_for :title, "Boards" %>
-<div class="row">
-  <div class="col-md-12">
-    <div class="card">
-      <div class="card-body">
-        <p id="notice"><%= notice %></p>
-        <p class="float-right">
-          <%= link_to 'New Board', new_board_path, class:"btn btn-success" %>
-        </p>
-        <table class="table table-striped table-bordered">
-          <thead>
-            <tr>
-              <th>Project</th>
-              <th>Board Name</th>
-              <th></th>
-            </tr>
-          </thead>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <p id="notice">
+            <%= notice %>
+          </p>
+          <p class="float-right">
+            <%= link_to 'New Board' , new_board_path, class:"btn btn-success" %>
+          </p>
+          <%= page_entries_info @boards %>
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Project</th>
+                <th>Board Name</th>
+                <th></th>
+              </tr>
+            </thead>
 
-          <tbody>
-            <% @boards.each do |board| %>
-            <tr>
-              <td><%= board.project.projectName %></td>
-              <td><%= board.boardName %></td>
-              <td>
-                <%= link_to fa_icon("eye"), board %>
-                <%= link_to fa_icon("pen"), edit_board_path(board) %>
-                <%= link_to fa_icon("trash"), board, method: :delete, data: { confirm: 'Are you sure?' } %>
-              </td>
-            </tr>
-            <% end %>
-          </tbody>
-        </table>
+            <tbody>
+              <% @boards.each do |board| %>
+                <tr>
+                  <td>
+                    <%= board.project.projectName %>
+                  </td>
+                  <td>
+                    <%= board.boardName %>
+                  </td>
+                  <td>
+                    <%= link_to fa_icon("eye"), board %>
+                      <%= link_to fa_icon("pen"), edit_board_path(board) %>
+                        <%= link_to fa_icon("trash"), board, method: :delete, data: { confirm: 'Are you sure?' } %>
+                  </td>
+                </tr>
+                <% end %>
+            </tbody>
+          </table>
+          <div class="clearfix">&nbsp;</div>
+          <div class="row">
+            <div class="col-12">
+              <%= will_paginate @clients, list_classes: %w(pagination justify-content-center) %>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>

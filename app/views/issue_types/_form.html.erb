@@ -1,7 +1,7 @@
 <%= form_with(model: issue_type, local: true) do |form| %>
 <% if issue_type.errors.any? %>
 <div id="error_explanation">
-    <h2><%= pluralize(issue_type.errors.count, "error") %> prohibited this from being saved:</h2>
+    <h2><%= pluralize(issue_type.errors.count, "error") %>:</h2>
     <ul>
         <% issue_type.errors.full_messages.each do |message| %>
         <li><%= message %></li>
@@ -12,7 +12,7 @@
 
 <div class="row">
     <div class="col-6">
-        <%= form.label :issueTypeName, "Issue Type Name" %>
+        <%= form.label :issueTypeName, "Issue Type" %>
         <%= form.text_field :issueTypeName, class: 'form-control' %>
     </div>
 </div>

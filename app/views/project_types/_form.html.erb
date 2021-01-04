@@ -1,7 +1,7 @@
 <%= form_with(model: project_type, local: true) do |form| %>
 <% if project_type.errors.any? %>
 <div id="error_explanation">
-    <h2><%= pluralize(project_type.errors.count, "error") %> prohibited this from being saved:</h2>
+    <h2><%= pluralize(project_type.errors.count, "error") %>:</h2>
 
     <ul>
         <% project_type.errors.full_messages.each do |message| %>
@@ -12,7 +12,7 @@
 <% end %>
 <div class="row">
     <div class="col-6">
-        <%= form.label :typeName, "Project Type Name" %>
+        <%= form.label :typeName, "Project Type" %>
         <%= form.text_field :typeName,class: 'form-control' %>
     </div>
 </div>

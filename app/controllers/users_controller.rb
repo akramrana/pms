@@ -9,7 +9,7 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     add_breadcrumb "index", users_path
-    @users = User.order('id DESC').all
+    @users = User.paginate(page: params[:page]).order('id DESC')
   end
 
   # GET /users/1
@@ -33,11 +33,11 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
-    @user.password = params[:password]
     @user.createTime = Time.now
     @user.updateTime = Time.now
 
     respond_to do |format|
+      @user.password = params[:password]
       if @user.save
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }

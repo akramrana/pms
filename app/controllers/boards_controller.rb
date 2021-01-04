@@ -9,7 +9,7 @@ class BoardsController < ApplicationController
   # GET /boards.json
   def index
     add_breadcrumb "index", boards_path
-    @boards = Board.order('id DESC').all
+    @boards = Board.paginate(page: params[:page]).order('id DESC')
   end
 
   # GET /boards/1

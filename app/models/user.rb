@@ -14,6 +14,7 @@ class User < ActiveRecord::Base
 
     self.table_name = 'users'
     self.primary_key = 'id'
+    self.per_page = 10
 
     validates :username, :email, :password_hash, :usertype, :presence => true
 

@@ -8,7 +8,7 @@ class ProjectsController < ApplicationController
   # GET /projects.json
   def index
     add_breadcrumb "List", projects_path
-    @projects = Project.order('id DESC').all
+    @projects = Project.paginate(page: params[:page]).order('id DESC')
   end
 
   # GET /projects/1
