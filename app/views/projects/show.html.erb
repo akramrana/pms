@@ -7,9 +7,10 @@
                         <%= notice %>
                     </p>
                     <p class="float-right">
-                        <%= link_to 'New Board' , 'javascript:;', class: "btn btn-success", :onclick => "site.showCreateBoardModal('#{@project.id}')" %>
-                        <%= link_to 'Update' , edit_project_path(@project), class: "btn btn-primary" %>
-                        <%= link_to 'Back' , projects_path, class: "btn btn-info" %>
+                        <%= link_to 'New Board' , 'javascript:;' , class: "btn btn-success" , :onclick=>
+                            "site.showCreateBoardModal('#{@project.id}')" %>
+                            <%= link_to 'Update' , edit_project_path(@project), class: "btn btn-primary" %>
+                                <%= link_to 'Back' , projects_path, class: "btn btn-info" %>
                     </p>
                     <table class="table table-striped table-bordered">
                         <tbody>
@@ -64,6 +65,8 @@
                                             <% board.board_issues.each do |boardIssue| %>
                                                 <li class="list-group-item">
                                                     <%=boardIssue.issue.summary;%>
+
+                                                        <%= link_to fa_icon("eye"), boardIssue.issue, class: "float-right" %>
                                                 </li>
                                                 <% end %>
                                         </ul>
@@ -92,7 +95,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    
+
                 </div>
             </div>
         </div>
@@ -112,7 +115,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    
+
                 </div>
             </div>
         </div>

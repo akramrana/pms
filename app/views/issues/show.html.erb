@@ -1,66 +1,117 @@
 <% content_for :title, @issue.summary %>
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-body">
-                <p id="notice"><%= notice %></p>
-                <p class="float-right">
-                    <%= link_to 'Update', edit_issue_path(@issue), class: "btn btn-primary" %>
-                    <%= link_to 'Back', issues_path, class: "btn btn-info" %>
-                </p>
-                <table class="table table-striped table-bordered">
-                    <tbody>
-                        <tr>
-                            <th>Project</th>
-                            <td><%= @issue.project.projectName %></td>
-                        </tr>
-                        <tr>
-                            <th>Issue Type</th>
-                            <td><%= @issue.issueType.issueTypeName %></td>
-                        </tr>
-                        <tr>
-                            <th>Summary</th>
-                            <td><%= @issue.summary %></td>
-                        </tr>
-                        <tr>
-                            <th>Priority Type</th>
-                            <td><%= @issue.priorityType.priorityTypeName %></td>
-                        </tr>
-                        <tr>
-                            <th>Due Date</th>
-                            <td><%= @issue.dueDate %></td>
-                        </tr>
-                        <tr>
-                            <th>Assignee</th>
-                            <td><%= @issue.assigneeUser.username %></td>
-                        </tr>
-                        <tr>
-                            <th>Reporter</th>
-                            <td><%= @issue.reporterUser.username %></td>
-                        </tr>
-                        <tr>
-                            <th>Environment</th>
-                            <td><%= @issue.environment %></td>
-                        </tr>
-                        <tr>
-                            <th>Description</th>
-                            <td><%= @issue.description %></td>
-                        </tr>
-                        <tr>
-                            <th>Original Estimate</th>
-                            <td><%= @issue.originalEstimate %></td>
-                        </tr>
-                        <tr>
-                            <th>Remain Estimate</th>
-                            <td><%= @issue.remainEstimate %></td>
-                        </tr>
-                        <tr>
-                            <th>Added Time</th>
-                            <td><%= @issue.addedTime %></td>
-                        </tr>
-                    </tbody>
-                </table>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <p id="notice">
+                        <%= notice %>
+                    </p>
+                    <p class="float-left">
+                        <%= link_to 'Go back to '+@issue.project.projectName , @issue.project, class: "btn btn-primary" %>
+                    </p>
+                    <p class="float-right">
+                        <%= link_to 'Update' , edit_issue_path(@issue), class: "btn btn-primary" %>
+                        <%= link_to 'Issues' , issues_path, class: "btn btn-info" %>
+                    </p>
+                    <div class="clearfix">&nbsp;</div>
+                    <div class="row">
+                        <div class="col-8">
+                            <div>
+                                <h3>Description: </h3>
+                                <hr/>
+                                <p>
+                                    <%= @issue.description %>
+                                </p>
+                            </div>
+                            <div class="mt-5">
+                                <h3>Checklist: </h3>
+                                <hr/>
+                            </div>
+                            <div class="mt-5">
+                                <h3>Attachments: </h3>
+                                <hr/>
+                            </div>
+                            <div class="mt-5">
+                                <h3>Comment: </h3>
+                                <hr/>
+                                <textarea class="form-control"></textarea>
+                                <div class="clearfix">&nbsp;</div>
+                                <a class="btn btn-info float-right" href="javascript:;">Add</a>
+                            </div>
+                            <div class="mt-5">
+                                <h3>Activity</h3>
+                                <hr/>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th>Project</th>
+                                        <td>
+                                            <%= @issue.project.projectName %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Issue Type</th>
+                                        <td>
+                                            <%= @issue.issueType.issueTypeName %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Priority Type</th>
+                                        <td>
+                                            <%= @issue.priorityType.priorityTypeName %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Due Date</th>
+                                        <td>
+                                            <%= @issue.dueDate %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Assignee</th>
+                                        <td>
+                                            <%= @issue.assigneeUser.username %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Reporter</th>
+                                        <td>
+                                            <%= @issue.reporterUser.username %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Environment</th>
+                                        <td>
+                                            <%= @issue.environment %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Original Estimate</th>
+                                        <td>
+                                            <%= @issue.originalEstimate %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Remain Estimate</th>
+                                        <td>
+                                            <%= @issue.remainEstimate %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Added Time</th>
+                                        <td>
+                                            <%= @issue.addedTime %>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
-</div>
