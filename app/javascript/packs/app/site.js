@@ -45,6 +45,29 @@ var site = {
             console.log(jqXHR.responseText);
         });
         $("#boardModal").modal("show");
+    },
+    submitComment: function (issueId) {
+        let comment = $('#commentBox').val();
+        if($.trim(comment)!="")
+        {
+            $.ajax({
+                type: "POST",
+                url: "/issues/" + issueId + "/add_comment",
+                data:{
+                    comment:comment,
+                }
+            }).done(function (res) {
+                $('#commentBox').val("")
+                if(res.id){
+                    alert('Comment successfully saved');
+                    setTimeout(function(){
+                        location.reload();
+                    },2000)
+                }
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR.responseText);
+            });
+        }
     }
 }
 export default site;

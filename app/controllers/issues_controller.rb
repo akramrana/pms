@@ -111,6 +111,20 @@ class IssuesController < ApplicationController
     render :layout => false 
   end
 
+  def add_comment
+    @issue = Issue.find(params[:id])
+
+    @issueComment = IssueComment.new()
+    @issueComment.issueId = @issue.id
+    @issueComment.userId = 1
+    @issueComment.comment = params[:comment]
+    @issueComment.time = Time.now
+    @issueComment.save
+    respond_to do |format|
+      format.json {render json: @issueComment, status: :ok}
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_issue

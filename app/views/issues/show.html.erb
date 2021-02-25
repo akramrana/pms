@@ -7,40 +7,74 @@
                         <%= notice %>
                     </p>
                     <p class="float-left">
-                        <%= link_to 'Go back to '+@issue.project.projectName , @issue.project, class: "btn btn-primary" %>
+                        <%= link_to 'Go back to ' +@issue.project.projectName , @issue.project, class: "btn btn-primary"
+                            %>
                     </p>
                     <p class="float-right">
                         <%= link_to 'Update' , edit_issue_path(@issue), class: "btn btn-primary" %>
-                        <%= link_to 'Issues' , issues_path, class: "btn btn-info" %>
+                            <%= link_to 'Issues' , issues_path, class: "btn btn-info" %>
                     </p>
                     <div class="clearfix">&nbsp;</div>
                     <div class="row">
                         <div class="col-8">
                             <div>
-                                <h3>Description: </h3>
-                                <hr/>
+                                <h5>Description: </h5>
+                                <hr />
                                 <p>
                                     <%= @issue.description %>
                                 </p>
                             </div>
                             <div class="mt-5">
-                                <h3>Checklist: </h3>
-                                <hr/>
+                                <h5>Checklist:
+                                    <small class="float-right">
+                                        <a href="#"><i class="fa fa-plus"></i> Add checklist item</a>
+                                    </small>
+                                </h5>
+                                <hr />
                             </div>
                             <div class="mt-5">
-                                <h3>Attachments: </h3>
-                                <hr/>
+                                <h5>Attachments:
+                                    <small class="float-right">
+                                        <a href="#"><i class="fa fa-plus"></i> Add attachments</a>
+                                    </small>
+                                </h5>
+                                <hr />
                             </div>
                             <div class="mt-5">
-                                <h3>Comment: </h3>
-                                <hr/>
-                                <textarea class="form-control"></textarea>
-                                <div class="clearfix">&nbsp;</div>
-                                <a class="btn btn-info float-right" href="javascript:;">Add</a>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                All Comments
+                                            </div>
+                                            <div class="card-body">
+                                                <ul class="list-group list-group-flush">
+                                                    <% @issue.issueComment.each do |issueComment| %>
+                                                        <li class="list-group-item">
+                                                            <b><%=issueComment.user.username;%></b><br/>
+                                                            <%=issueComment.comment;%>
+                                                        </li>
+                                                        <% end %>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h5>Comment: </h5>
+                                        <hr />
+                                        <textarea id="commentBox" class="form-control"></textarea>
+                                        <div class="clearfix">&nbsp;</div>
+                                        <a onclick="site.submitComment(<%=@issue.id;%>)"
+                                            class="btn btn-info float-right" href="javascript:;">Add
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                             <div class="mt-5">
-                                <h3>Activity</h3>
-                                <hr/>
+                                <h5>Activity</h5>
+                                <hr />
                             </div>
                         </div>
                         <div class="col-4">

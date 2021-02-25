@@ -13,4 +13,6 @@ class Issue < ActiveRecord::Base
     belongs_to :assigneeUser, :class_name => 'User', foreign_key: :assignee, optional: true
     belongs_to :reporterUser, :class_name => 'User', foreign_key: :reporter, optional: true
 
+    has_many :issueComment, :foreign_key => "issueId"
+
 end
