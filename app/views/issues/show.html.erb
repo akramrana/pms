@@ -19,18 +19,30 @@
                         <div class="col-8">
                             <div>
                                 <h5>Description: </h5>
-                                <hr />
-                                <p>
-                                    <%= @issue.description %>
-                                </p>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <%= @issue.description %>
+                                    </div>
+                                </div>
                             </div>
                             <div class="mt-5">
                                 <h5>Checklist:
                                     <small class="float-right">
-                                        <a href="#"><i class="fa fa-plus"></i> Add checklist item</a>
+                                        <a onclick="site.showCheckListModal(<%=@issue.id;%>)" href="javascript:;"><i class="fa fa-plus"></i> Add checklist item</a>
                                     </small>
                                 </h5>
-                                <hr />
+                                
+                                <div class="card">
+                                    <div class="card-body">
+                                        <ul class="list-group list-group-flush">
+                                            <% @issue.issueChecklist.each do |issueChecklist| %>
+                                                <li class="list-group-item">
+                                                    <input type="checkbox" value="<%=issueChecklist.issue_checklist_id;%>"/> <%=issueChecklist.description;%>
+                                                </li>
+                                                <% end %>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                             <div class="mt-5">
                                 <h5>Attachments:
@@ -38,7 +50,6 @@
                                         <a href="#"><i class="fa fa-plus"></i> Add attachments</a>
                                     </small>
                                 </h5>
-                                <hr />
                             </div>
                             <div class="mt-5">
                                 <div class="row">
@@ -63,7 +74,6 @@
                                 <div class="row">
                                     <div class="col">
                                         <h5>Comment: </h5>
-                                        <hr />
                                         <textarea id="commentBox" class="form-control"></textarea>
                                         <div class="clearfix">&nbsp;</div>
                                         <a onclick="site.submitComment(<%=@issue.id;%>)"
@@ -144,6 +154,26 @@
                             </table>
                         </div>
                     </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="checkListModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add checklist item</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="ajax-chklst-form">
+
+                </div>
+                <div class="modal-footer">
 
                 </div>
             </div>

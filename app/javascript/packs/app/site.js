@@ -68,6 +68,19 @@ var site = {
                 console.log(jqXHR.responseText);
             });
         }
+    },
+    showCheckListModal:function(issueId){
+        $.ajax({
+            type: "GET",
+            url: "/issue_checklists/" + issueId + "/quick_create",
+        }).done(function (res) {
+            //console.log(res);
+            $("#ajax-chklst-form").html(res);
+            $("#issue_checklist_issue_id").val(issueId);
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR.responseText);
+        });
+        $("#checkListModal").modal("show");
     }
 }
 export default site;

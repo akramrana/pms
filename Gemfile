@@ -46,7 +46,7 @@ group :test do
   gem 'webdrivers'
 end
 
-gem 'mysql2', '~> 0.5.2'
+#gem 'mysql2', '~> 0.5.2'
 
 gem "breadcrumbs_on_rails"
 
@@ -55,6 +55,12 @@ gem "font-awesome-rails"
 gem 'will_paginate', '~> 3.1.0'
 
 gem 'will_paginate-bootstrap4'
+
+gem 'carrierwave', '~> 2.0'
+
+gem 'mini_magick'
+
+gem 'file_validators'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
