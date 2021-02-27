@@ -81,6 +81,19 @@ var site = {
             console.log(jqXHR.responseText);
         });
         $("#checkListModal").modal("show");
+    },
+    showAttachmentModal:function(issueId){
+        $.ajax({
+            type: "GET",
+            url: "/issue_images/" + issueId + "/quick_create",
+        }).done(function (res) {
+            //console.log(res);
+            $("#ajax-attachments-form").html(res);
+            $("#issue_image_issueId").val(issueId);
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR.responseText);
+        });
+        $("#attachmentsModal").modal("show");
     }
 }
 export default site;

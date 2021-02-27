@@ -15,5 +15,6 @@ class Issue < ActiveRecord::Base
 
     has_many :issueComment, :foreign_key => "issueId"
     has_many :issueChecklist, :foreign_key => "issue_id"
+    has_many :issueImage, :foreign_key => "issueId"
 
 end

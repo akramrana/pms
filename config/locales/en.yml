@@ -56,3 +56,9 @@ en:
         priorityTypeName: "Priority Type"
       user_type:
         userTypeName: "User Type"
+
+  errors:
+    messages:
+      carrierwave_processing_error: "Cannot resize image."
+      carrierwave_integrity_error: "Not an image."
+      carrierwave_download_error: "Couldn't download image."
