@@ -28,6 +28,13 @@ class IssueImagesController < ApplicationController
     @issue_image.userId = 1;
     respond_to do |format|
       if @issue_image.save
+        
+        @issueActivities = IssueActivity.new
+        @issueActivities.issue_id = @issue_image.issueId
+        @issueActivities.user_id = @issue_image.userId
+        @issueActivities.description = 'added an attachment'
+        @issueActivities.save
+
         format.html { redirect_to @issue_image, notice: 'Issue image was successfully created.' }
         format.js
       else

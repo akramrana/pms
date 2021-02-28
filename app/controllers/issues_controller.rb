@@ -120,6 +120,14 @@ class IssuesController < ApplicationController
     @issueComment.comment = params[:comment]
     @issueComment.time = Time.now
     @issueComment.save
+
+    @issueActivities = IssueActivity.new
+    @issueActivities.issue_id = @issueComment.issueId
+    @issueActivities.user_id = @issueComment.userId
+    @issueActivities.description = 'added a comment '+@issueComment.comment
+    @issueActivities.save
+
+
     respond_to do |format|
       format.json {render json: @issueComment, status: :ok}
     end

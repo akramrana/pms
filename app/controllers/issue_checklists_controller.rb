@@ -30,6 +30,13 @@ class IssueChecklistsController < ApplicationController
     @issue_checklist.user_id = 1;
     respond_to do |format|
       if @issue_checklist.save
+
+        @issueActivities = IssueActivity.new
+        @issueActivities.issue_id = @issue_checklist.issue_id
+        @issueActivities.user_id = @issue_checklist.user_id
+        @issueActivities.description = 'added a checklist item '+@issue_checklist.description
+        @issueActivities.save
+
         format.html { redirect_to @issue_checklist, notice: 'Issue checklist was successfully created.' }
         format.js
       else

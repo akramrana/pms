@@ -38,9 +38,18 @@
                                         <ul class="list-group list-group-flush">
                                             <% @issue.issueChecklist.each do |issueChecklist| %>
                                                 <li class="list-group-item">
-                                                    <input type="checkbox"
-                                                        value="<%=issueChecklist.issue_checklist_id;%>" />
-                                                    <%=issueChecklist.description;%>
+                                                    <div class="row">
+                                                        <div class="col-1">
+                                                            <% if issueChecklist.is_completed==1 %>
+                                                                <input checked type="checkbox" value="<%=issueChecklist.issue_checklist_id;%>" />
+                                                            <% else %>
+                                                                <input type="checkbox" value="<%=issueChecklist.issue_checklist_id;%>" />
+                                                            <% end %>
+                                                        </div>
+                                                        <div class="col-11">
+                                                            <%=issueChecklist.description;%>
+                                                        </div>
+                                                    </div>
                                                 </li>
                                                 <% end %>
                                         </ul>
@@ -103,7 +112,20 @@
                             </div>
                             <div class="mt-5">
                                 <h5>Activity</h5>
-                                <hr />
+                                <div class="card">
+                                    <div class="card-body">
+                                        <ul class="list-group list-group-flush">
+                                            <% @issue.issueActivity.each do |issueActivity| %>
+                                                <li class="list-group-item">
+                                                    <b>
+                                                        <%=issueActivity.user.username;%>
+                                                    </b><br />
+                                                    <%=issueActivity.description;%>
+                                                </li>
+                                                <% end %>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-4">
