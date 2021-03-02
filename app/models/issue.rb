@@ -1,7 +1,7 @@
 class Issue < ActiveRecord::Base
     self.table_name = 'issues'
     self.primary_key = 'id'
-    self.per_page = 10
+    self.per_page = 20
 
     attr_accessor :boardId
 

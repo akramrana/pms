@@ -48,28 +48,25 @@ var site = {
     },
     submitComment: function (issueId) {
         let comment = $('#commentBox').val();
-        if($.trim(comment)!="")
-        {
+        if ($.trim(comment) != "") {
             $.ajax({
                 type: "POST",
                 url: "/issues/" + issueId + "/add_comment",
-                data:{
-                    comment:comment,
+                data: {
+                    comment: comment,
                 }
             }).done(function (res) {
                 $('#commentBox').val("")
-                if(res.id){
+                if (res.id) {
                     alert('Comment successfully saved');
-                    setTimeout(function(){
-                        location.reload();
-                    },2000)
+                    location.reload();
                 }
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR.responseText);
             });
         }
     },
-    showCheckListModal:function(issueId){
+    showCheckListModal: function (issueId) {
         $.ajax({
             type: "GET",
             url: "/issue_checklists/" + issueId + "/quick_create",
@@ -82,7 +79,7 @@ var site = {
         });
         $("#checkListModal").modal("show");
     },
-    showAttachmentModal:function(issueId){
+    showAttachmentModal: function (issueId) {
         $.ajax({
             type: "GET",
             url: "/issue_images/" + issueId + "/quick_create",
@@ -94,6 +91,35 @@ var site = {
             console.log(jqXHR.responseText);
         });
         $("#attachmentsModal").modal("show");
+    },
+    allowDrop: function (ev) {
+        ev.preventDefault();
+    },
+    drag: function (ev) {
+        ev.dataTransfer.setData("text", ev.target.id);
+    },
+    drop: function (ev,targetBoardId) {
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("text");
+        ev.target.appendChild(document.getElementById(data));
+        var issueId = data.split("-")[1];
+        console.log(targetBoardId);
+        console.log(issueId);
+        $.ajax({
+            type: "POST",
+            url: "/issues/" + issueId + "/move",
+            data: {
+                boardId: targetBoardId,
+            }
+        }).done(function (res) {
+            console.log(res);
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR.responseText);
+        });
+
+    },
+    noAllowDrop:function(ev){
+        ev.stopPropagation();
     }
 }
 export default site;

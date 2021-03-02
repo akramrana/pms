@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get 'issues/:id/quick_create', :to => 'issues#quick_create'
   get 'boards/:id/quick_create', :to => 'boards#quick_create'
   post 'issues/:id/add_comment', :to => 'issues#add_comment'
+  post 'issues/:id/move', :to => 'issues#move'
   get 'issue_checklists/:id/quick_create', :to => 'issue_checklists#quick_create'
   get 'issue_images/:id/quick_create', :to => 'issue_images#quick_create'
 

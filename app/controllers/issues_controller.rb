@@ -110,6 +110,22 @@ class IssuesController < ApplicationController
 
     render :layout => false 
   end
+  
+  def move
+    @issue = Issue.find(params[:id])
+    @boardId = params[:boardId];
+    BoardIssue.delete_by(issueId:@issue.id)
+
+    @boardIssue = BoardIssue.new
+    @boardIssue.boardId = @boardId;
+    @boardIssue.issueId = @issue.id;
+    @boardIssue.save
+
+    respond_to do |format|
+      format.json {render json: @boardIssue, status: :ok}
+    end
+
+  end
 
   def add_comment
     @issue = Issue.find(params[:id])
