@@ -149,6 +149,39 @@ class IssuesController < ApplicationController
     end
   end
 
+  def complete_checklist
+    @issue = Issue.find(params[:id])
+    @issueChecklist = IssueChecklist.find(params[:issue_checklist_id])
+    @completed = params[:is_checked]
+
+    if @completed=='1'
+      @issueChecklist.completed_by = 1;
+      @issueChecklist.is_completed = 1
+      @issueChecklist.save
+
+      @issueActivities = IssueActivity.new
+      @issueActivities.issue_id = @issue.id
+      @issueActivities.user_id = 1
+      @issueActivities.description = 'completed a checklist item'
+      @issueActivities.save
+    else
+      @issueChecklist.completed_by = nil;
+      @issueChecklist.is_completed = 0
+      @issueChecklist.save
+
+      @issueActivities = IssueActivity.new
+      @issueActivities.issue_id = @issue.id
+      @issueActivities.user_id = 1
+      @issueActivities.description = 're-open a checklist item'
+      @issueActivities.save
+    end
+
+    respond_to do |format|
+      format.json {render json: @issueChecklist, status: :ok}
+    end
+
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_issue

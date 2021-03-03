@@ -14,7 +14,7 @@ class Issue < ActiveRecord::Base
     belongs_to :reporterUser, :class_name => 'User', foreign_key: :reporter, optional: true
 
     has_many :issueComment, :foreign_key => "issueId"
-    has_many :issueChecklist, :foreign_key => "issue_id"
+    has_many :issueChecklist, -> { where(is_deleted: 0) }, :foreign_key => "issue_id"
     has_many :issueImage, :foreign_key => "issueId"
     has_many :issueActivity, :foreign_key => "issue_id"
 

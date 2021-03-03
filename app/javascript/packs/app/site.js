@@ -98,13 +98,13 @@ var site = {
     drag: function (ev) {
         ev.dataTransfer.setData("text", ev.target.id);
     },
-    drop: function (ev,targetBoardId) {
+    drop: function (ev, targetBoardId) {
         ev.preventDefault();
         var data = ev.dataTransfer.getData("text");
         ev.target.appendChild(document.getElementById(data));
         var issueId = data.split("-")[1];
-        console.log(targetBoardId);
-        console.log(issueId);
+        //console.log(targetBoardId);
+        //console.log(issueId);
         $.ajax({
             type: "POST",
             url: "/issues/" + issueId + "/move",
@@ -118,8 +118,24 @@ var site = {
         });
 
     },
-    noAllowDrop:function(ev){
+    noAllowDrop: function (ev) {
         ev.stopPropagation();
+    },
+    toggleChecklistCOmpleted: function (issueId, issue_checklist_id) {
+        var isChecked = $("#chk-" + issue_checklist_id).is(":checked");
+        $.ajax({
+            type: "POST",
+            url: "/issues/" + issueId + "/complete_checklist",
+            data: {
+                issue_checklist_id: issue_checklist_id,
+                is_checked: (isChecked) ? 1 : 0,
+            }
+        }).done(function (res) {
+            //console.log(res);
+            location.reload();
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR.responseText);
+        });
     }
 }
 export default site;

@@ -41,13 +41,23 @@
                                                     <div class="row">
                                                         <div class="col-1">
                                                             <% if issueChecklist.is_completed==1 %>
-                                                                <input checked type="checkbox" value="<%=issueChecklist.issue_checklist_id;%>" />
-                                                            <% else %>
-                                                                <input type="checkbox" value="<%=issueChecklist.issue_checklist_id;%>" />
-                                                            <% end %>
+                                                                <input id="chk-<%=issueChecklist.issue_checklist_id;%>" onclick="site.toggleChecklistCOmpleted(<%=@issue.id;%>,<%=issueChecklist.issue_checklist_id;%>)" checked type="checkbox"
+                                                                    value="<%=issueChecklist.issue_checklist_id;%>" />
+                                                                <% else %>
+                                                                    <input id="chk-<%=issueChecklist.issue_checklist_id;%>" onclick="site.toggleChecklistCOmpleted(<%=@issue.id;%>,<%=issueChecklist.issue_checklist_id;%>)" type="checkbox"
+                                                                        value="<%=issueChecklist.issue_checklist_id;%>" />
+                                                                    <% end %>
                                                         </div>
                                                         <div class="col-11">
-                                                            <%=issueChecklist.description;%>
+                                                            <% if issueChecklist.is_completed==1 %>
+                                                                <span style="text-decoration: line-through;">
+                                                                    <%=issueChecklist.description;%>
+                                                                </span>
+                                                                <% else %>
+                                                                    <span>
+                                                                        <%=issueChecklist.description;%>
+                                                                    </span>
+                                                                <% end %>
                                                         </div>
                                                     </div>
                                                 </li>
