@@ -9,6 +9,6 @@ class Project < ActiveRecord::Base
     belongs_to :user, foreign_key: :projectLeader, optional: true
     
     has_many :issues
-    has_many :boards, :foreign_key => "projectId"
+    has_many :boards, -> { where(is_deleted: 0) }, :foreign_key => "projectId"
 
 end

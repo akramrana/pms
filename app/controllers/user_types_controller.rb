@@ -6,7 +6,7 @@ class UserTypesController < ApplicationController
   # GET /user_types.json
   def index
     add_breadcrumb "List", user_types_path
-    @user_types = UserType.all
+    @user_types = UserType.where(:is_deleted => 0).all
   end
 
   # GET /user_types/1
@@ -60,7 +60,9 @@ class UserTypesController < ApplicationController
   # DELETE /user_types/1
   # DELETE /user_types/1.json
   def destroy
-    @user_type.destroy
+    #@user_type.destroy
+    @user_type.attributes = {is_deleted:1}
+    @user_type.save(validate: false)
     respond_to do |format|
       format.html { redirect_to user_types_url, notice: 'User type was successfully destroyed.' }
       format.json { head :no_content }

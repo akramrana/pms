@@ -136,6 +136,71 @@ var site = {
         }).fail(function (jqXHR, textStatus, errorThrown) {
             console.log(jqXHR.responseText);
         });
+    },
+    changeIssueStatus: function (type, issueId) {
+        $.ajax({
+            type: "POST",
+            url: "/issues/" + issueId + "/change_status",
+            data: {
+                type: type,
+            }
+        }).done(function (res) {
+            //console.log(res);
+            location.reload();
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR.responseText);
+        });
+    },
+    deleteComment: function (commentId, issueId) {
+        var r = confirm('Are you sure?')
+        if (r) {
+            $.ajax({
+                type: "POST",
+                url: "/issues/" + issueId + "/delete_comment",
+                data: {
+                    commentId: commentId,
+                }
+            }).done(function (res) {
+                //console.log(res);
+                location.reload();
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR.responseText);
+            });
+        }
+    },
+    deleteAttachment: function (imageId, issueId) {
+        var r = confirm('Are you sure?')
+        if (r) {
+            $.ajax({
+                type: "POST",
+                url: "/issues/" + issueId + "/delete_attachment",
+                data: {
+                    imageId: imageId,
+                }
+            }).done(function (res) {
+                //console.log(res);
+                location.reload();
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR.responseText);
+            });
+        }
+    },
+    deleteChecklistItem: function (issueCecklistId, issueId) {
+        var r = confirm('Are you sure?')
+        if (r) {
+            $.ajax({
+                type: "POST",
+                url: "/issues/" + issueId + "/delete_checklist_item",
+                data: {
+                    issueCecklistId: issueCecklistId,
+                }
+            }).done(function (res) {
+                //console.log(res);
+                location.reload();
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR.responseText);
+            });
+        }
     }
 }
 export default site;

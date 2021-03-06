@@ -9,7 +9,7 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     add_breadcrumb "index", users_path
-    @users = User.paginate(page: params[:page]).order('id DESC')
+    @users = User.paginate(page: params[:page]).where(:is_deleted => 0).order('id DESC')
   end
 
   # GET /users/1
@@ -67,7 +67,9 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    @user.destroy
+    #@user.destroy
+    @user.attributes = {is_deleted:1}
+    @user.save(validate: false)
     respond_to do |format|
       format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
       format.json { head :no_content }

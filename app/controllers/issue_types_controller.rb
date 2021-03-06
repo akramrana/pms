@@ -6,7 +6,7 @@ class IssueTypesController < ApplicationController
   # GET /issue_types.json
   def index
     add_breadcrumb "List", issue_types_path
-    @issue_types = IssueType.all
+    @issue_types = IssueType.where(:is_deleted => 0).all
   end
 
   # GET /issue_types/1
@@ -60,7 +60,9 @@ class IssueTypesController < ApplicationController
   # DELETE /issue_types/1
   # DELETE /issue_types/1.json
   def destroy
-    @issue_type.destroy
+    #@issue_type.destroy
+    @issue_type.attributes = {is_deleted:1}
+    @issue_type.save(validate: false)
     respond_to do |format|
       format.html { redirect_to issue_types_url, notice: 'Issue type was successfully destroyed.' }
       format.json { head :no_content }

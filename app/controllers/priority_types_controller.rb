@@ -6,7 +6,7 @@ class PriorityTypesController < ApplicationController
   # GET /priority_types.json
   def index
     add_breadcrumb "List", priority_types_path
-    @priority_types = PriorityType.all
+    @priority_types = PriorityType.where(:is_deleted => 0).all
   end
 
   # GET /priority_types/1
@@ -60,7 +60,10 @@ class PriorityTypesController < ApplicationController
   # DELETE /priority_types/1
   # DELETE /priority_types/1.json
   def destroy
-    @priority_type.destroy
+    #@priority_type.destroy
+    @priority_type.attributes = {is_deleted:1}
+    @priority_type.save(validate: false)
+
     respond_to do |format|
       format.html { redirect_to priority_types_url, notice: 'Priority type was successfully destroyed.' }
       format.json { head :no_content }

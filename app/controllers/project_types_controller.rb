@@ -6,7 +6,7 @@ class ProjectTypesController < ApplicationController
   # GET /project_types.json
   def index
     add_breadcrumb "List", project_types_path
-    @project_types = ProjectType.all
+    @project_types = ProjectType.where(:is_deleted => 0).all
   end
 
   # GET /project_types/1
@@ -60,7 +60,9 @@ class ProjectTypesController < ApplicationController
   # DELETE /project_types/1
   # DELETE /project_types/1.json
   def destroy
-    @project_type.destroy
+    #@project_type.
+    @project_type.attributes = {is_deleted:1}
+    @project_type.save(validate: false)
     respond_to do |format|
       format.html { redirect_to project_types_url, notice: 'Project type was successfully destroyed.' }
       format.json { head :no_content }

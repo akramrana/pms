@@ -12,7 +12,7 @@ class IssuesController < ApplicationController
   # GET /issues.json
   def index
     add_breadcrumb "List", issues_path
-    @issues = Issue.paginate(page: params[:page]).order('id DESC')
+    @issues = Issue.paginate(page: params[:page]).where(:is_deleted => 0).order('id DESC')
   end
 
   # GET /issues/1
@@ -89,7 +89,12 @@ class IssuesController < ApplicationController
   # DELETE /issues/1
   # DELETE /issues/1.json
   def destroy
-    @issue.destroy
+    #@issue.destroy
+    @issue.attributes = {is_deleted:1}
+    @issue.save(validate: false)
+
+    BoardIssue.where(:issueId => @issue.id).destroy_all
+
     respond_to do |format|
       format.html { redirect_to issues_url, notice: 'Issue was successfully destroyed.' }
       format.json { head :no_content }
@@ -180,6 +185,103 @@ class IssuesController < ApplicationController
       format.json {render json: @issueChecklist, status: :ok}
     end
 
+  end
+
+  def change_status
+    @issue = Issue.find(params[:id])
+    @type = params[:type]
+    @comment = '';
+    if @type == 'start'
+      @issue.attributes = {start:1, stop:0, reopen:0}
+      @comment = 'started'
+    end
+    if @type == 'stop'
+      @issue.attributes = {start:0, stop:1}
+      @comment = 'stopped'
+    end
+    if @type == 'done'
+      @issue.attributes = {start:0, stop:0, done:1}
+      @comment = 'completed'
+    end
+    if @type == 'reopen'
+      @issue.attributes = {reopen:1, done:0}
+      @comment = 'reopened'
+    end 
+    @issue.save(validate: false)
+
+    @issueHistory = IssueHistory.new
+    @issueHistory.history_type = @type
+    @issueHistory.issue_id = @issue.id
+    @issueHistory.user_id = 1
+    @issueHistory.created_at = Time.now
+    @issueHistory.save
+
+    @issueActivities = IssueActivity.new
+    @issueActivities.issue_id = @issueHistory.issue_id
+    @issueActivities.user_id = @issueHistory.user_id
+    @issueActivities.description = @comment+' the issue'
+    @issueActivities.save
+
+    respond_to do |format|
+      format.json {render json: @issue, status: :ok}
+    end
+  end
+
+  def delete_comment
+    @issue = Issue.find(params[:id])
+    @commentId = params[:commentId]
+    
+    @issueComment = IssueComment.find(@commentId)
+    @issueComment.attributes = {is_deleted:1}
+    @issueComment.save(validate: false)
+
+    @issueActivities = IssueActivity.new
+    @issueActivities.issue_id = @issueComment.issueId
+    @issueActivities.user_id = @issueComment.userId
+    @issueActivities.description = 'deleted a comment'
+    @issueActivities.save
+
+    respond_to do |format|
+      format.json {render json: @issue, status: :ok}
+    end
+  end
+  
+  def delete_checklist_item
+    @issue = Issue.find(params[:id])
+    @issueCecklistId = params[:issueCecklistId]
+    
+    @issueChecklist = IssueChecklist.find(@issueCecklistId)
+    @issueChecklist.attributes = {is_deleted:1}
+    @issueChecklist.save(validate: false)
+
+    @issueActivities = IssueActivity.new
+    @issueActivities.issue_id = @issueChecklist.issue_id
+    @issueActivities.user_id = @issueChecklist.user_id
+    @issueActivities.description = 'deleted a checklist item'
+    @issueActivities.save
+
+    respond_to do |format|
+      format.json {render json: @issue, status: :ok}
+    end
+  end
+
+  def delete_attachment
+    @issue = Issue.find(params[:id])
+    @imageId = params[:imageId]
+    
+    @issueImage = IssueImage.find(@imageId)
+    
+    @issueActivities = IssueActivity.new
+    @issueActivities.issue_id = @issueImage.issueId
+    @issueActivities.user_id = @issueImage.userId
+    @issueActivities.description = 'deleted an attachment'
+    @issueActivities.save
+
+    @issueImage.destroy
+
+    respond_to do |format|
+      format.json {render json: @issue, status: :ok}
+    end
   end
 
   private

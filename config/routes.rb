@@ -8,6 +8,10 @@ Rails.application.routes.draw do
   post 'issues/:id/add_comment', :to => 'issues#add_comment'
   post 'issues/:id/move', :to => 'issues#move'
   post 'issues/:id/complete_checklist', :to => 'issues#complete_checklist'
+  post 'issues/:id/change_status', :to => 'issues#change_status'
+  post 'issues/:id/delete_checklist_item', :to => 'issues#delete_checklist_item'
+  post 'issues/:id/delete_attachment', :to => 'issues#delete_attachment'
+  post 'issues/:id/delete_comment', :to => 'issues#delete_comment'
   get 'issue_checklists/:id/quick_create', :to => 'issue_checklists#quick_create'
   get 'issue_images/:id/quick_create', :to => 'issue_images#quick_create'
 

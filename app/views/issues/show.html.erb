@@ -11,8 +11,23 @@
                             %>
                     </p>
                     <p class="float-right">
+                        <% if @issue.done==1%>
+                            <a title="Completed" class="btn btn-default" href="javascript:;"><i class="fa fa-check-circle text-success"></i></a>
+                        <% end %>
                         <%= link_to 'Update' , edit_issue_path(@issue), class: "btn btn-primary" %>
-                            <%= link_to 'Issues' , issues_path, class: "btn btn-info" %>
+                        <%= link_to 'Issues' , issues_path, class: "btn btn-info" %>
+                        <% if @issue.start==0 && (@issue.stop==0 || @issue.stop==1) && @issue.done==0 %>
+                            <a onclick="site.changeIssueStatus('start',<%=@issue.id;%>)" href="javascript:;" class="btn btn-dark">Start</a>
+                        <% end %>
+                        <% if @issue.start==1 && @issue.stop==0 %>
+                            <a onclick="site.changeIssueStatus('stop',<%=@issue.id;%>)" href="javascript:;" class="btn btn-danger">Stop</a>
+                        <% end %>
+                        <% if @issue.done==0%>
+                            <a onclick="site.changeIssueStatus('done',<%=@issue.id;%>)" href="javascript:;" class="btn btn-success">Completed</a>
+                        <% end %>
+                        <% if @issue.done==1 && (@issue.reopen==0 || @issue.reopen==1)%>
+                            <a onclick="site.changeIssueStatus('reopen',<%=@issue.id;%>)" href="javascript:;" class="btn btn-warning">Reopen</a>
+                        <% end %>
                     </p>
                     <div class="clearfix">&nbsp;</div>
                     <div class="row">
@@ -41,23 +56,35 @@
                                                     <div class="row">
                                                         <div class="col-1">
                                                             <% if issueChecklist.is_completed==1 %>
-                                                                <input id="chk-<%=issueChecklist.issue_checklist_id;%>" onclick="site.toggleChecklistCOmpleted(<%=@issue.id;%>,<%=issueChecklist.issue_checklist_id;%>)" checked type="checkbox"
+                                                                <input id="chk-<%=issueChecklist.issue_checklist_id;%>"
+                                                                    onclick="site.toggleChecklistCOmpleted(<%=@issue.id;%>,<%=issueChecklist.issue_checklist_id;%>)"
+                                                                    checked type="checkbox"
                                                                     value="<%=issueChecklist.issue_checklist_id;%>" />
-                                                                <% else %>
-                                                                    <input id="chk-<%=issueChecklist.issue_checklist_id;%>" onclick="site.toggleChecklistCOmpleted(<%=@issue.id;%>,<%=issueChecklist.issue_checklist_id;%>)" type="checkbox"
-                                                                        value="<%=issueChecklist.issue_checklist_id;%>" />
-                                                                    <% end %>
+                                                            <% else %>
+                                                                <input
+                                                                    id="chk-<%=issueChecklist.issue_checklist_id;%>"
+                                                                    onclick="site.toggleChecklistCOmpleted(<%=@issue.id;%>,<%=issueChecklist.issue_checklist_id;%>)"
+                                                                    type="checkbox"
+                                                                    value="<%=issueChecklist.issue_checklist_id;%>" />
+                                                            <% end %>
                                                         </div>
-                                                        <div class="col-11">
+                                                        <div class="col-10">
                                                             <% if issueChecklist.is_completed==1 %>
                                                                 <span style="text-decoration: line-through;">
                                                                     <%=issueChecklist.description;%>
                                                                 </span>
-                                                                <% else %>
-                                                                    <span>
-                                                                        <%=issueChecklist.description;%>
-                                                                    </span>
-                                                                <% end %>
+                                                            <% else %>
+                                                                <span>
+                                                                    <%=issueChecklist.description;%>
+                                                                </span>
+                                                            <% end %>
+                                                            <br/>
+                                                            <small><%= issueChecklist.created_at %></small>
+                                                        </div>
+                                                        <div class="col-1">
+                                                            <a onclick="site.deleteChecklistItem(<%=issueChecklist.issue_checklist_id;%>,<%=@issue.id;%>)" href="javascript:;" class="float-right">
+                                                                <i class="fa fa-trash"></i>
+                                                            </a>
                                                         </div>
                                                     </div>
                                                 </li>
@@ -78,11 +105,20 @@
                                         <ul class="list-group list-group-flush">
                                             <% @issue.issueImage.each do |issueImage| %>
                                                 <li class="list-group-item">
-                                                    <a href="<%= issueImage.image.url %>">
+                                                    <b>
+                                                        <%=issueImage.user.username;%> added an attachment
+                                                    </b>
+                                                    <br/>
+                                                    <a download href="<%= issueImage.image.url %>">
                                                         <%= image_tag issueImage.image.thumb.url %>
                                                     </a>
+                                                    <a onclick="site.deleteAttachment(<%= issueImage.id %>,<%=@issue.id;%>)" href="javascript:;" class="float-right">
+                                                        <i class="fa fa-trash"></i>
+                                                    </a>
+                                                    <br/>
+                                                    <small><%= issueImage.created_at %></small>
                                                 </li>
-                                                <% end %>
+                                            <% end %>
                                         </ul>
                                     </div>
                                 </div>
@@ -99,11 +135,17 @@
                                                     <% @issue.issueComment.each do |issueComment| %>
                                                         <li class="list-group-item">
                                                             <b>
-                                                                <%=issueComment.user.username;%>
-                                                            </b><br />
+                                                                <%=issueComment.user.username;%> says 
+                                                            </b>
                                                             <%=issueComment.comment;%>
+
+                                                            <a onclick="site.deleteComment(<%= issueComment.id %>,<%=@issue.id;%>)" href="javascript:;" class="float-right">
+                                                                <i class="fa fa-trash"></i>
+                                                            </a>
+                                                            <br/>
+                                                            <small><%= issueComment.time %></small>
                                                         </li>
-                                                        <% end %>
+                                                    <% end %>
                                                 </ul>
                                             </div>
                                         </div>
@@ -129,8 +171,10 @@
                                                 <li class="list-group-item">
                                                     <b>
                                                         <%=issueActivity.user.username;%>
-                                                    </b><br />
+                                                    </b>
                                                     <%=issueActivity.description;%>
+                                                    <br/>
+                                                    <small><%= issueActivity.created_at %></small>
                                                 </li>
                                                 <% end %>
                                         </ul>

@@ -8,7 +8,7 @@ class ProjectsController < ApplicationController
   # GET /projects.json
   def index
     add_breadcrumb "List", projects_path
-    @projects = Project.paginate(page: params[:page]).order('id DESC')
+    @projects = Project.paginate(page: params[:page]).where(:is_deleted => 0).order('id DESC')
   end
 
   # GET /projects/1
@@ -63,7 +63,9 @@ class ProjectsController < ApplicationController
   # DELETE /projects/1
   # DELETE /projects/1.json
   def destroy
-    @project.destroy
+    #@project.destroy
+    @project.attributes = {is_deleted:1}
+    @project.save(validate: false)
     respond_to do |format|
       format.html { redirect_to projects_url, notice: 'Project was successfully destroyed.' }
       format.json { head :no_content }

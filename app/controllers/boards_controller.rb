@@ -9,7 +9,7 @@ class BoardsController < ApplicationController
   # GET /boards.json
   def index
     add_breadcrumb "index", boards_path
-    @boards = Board.paginate(page: params[:page]).order('id DESC')
+    @boards = Board.paginate(page: params[:page]).where(:is_deleted => 0).order('id DESC')
   end
 
   # GET /boards/1
@@ -66,7 +66,9 @@ class BoardsController < ApplicationController
   # DELETE /boards/1
   # DELETE /boards/1.json
   def destroy
-    @board.destroy
+    #@board.destroy
+    @board.attributes = {is_deleted:1}
+    @board.save(validate: false)
     respond_to do |format|
       format.html { redirect_to boards_url, notice: 'Board was successfully destroyed.' }
       format.json { head :no_content }
