@@ -23,8 +23,13 @@
   </div>
 
   <div class="col-6">
-    <%= form.label :password_hash, "Password" %>
-    <%= form.password_field :password_hash, class: 'form-control' %>
+    <%= form.label :password, "Password" %>
+    <%= form.password_field :password, class: 'form-control' %>
+  </div>
+
+  <div class="col-6">
+    <%= form.label :password_confirmation, "Confirm Password" %>
+    <%= form.password_field :password_confirmation, class: 'form-control' %>
   </div>
 
   <div class="col-6">

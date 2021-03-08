@@ -51,7 +51,12 @@
                         <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
                     </div>
                 </li>
+                <% if logged_in? %>
+                    <li class="nav-item"><%= link_to "Log out", logout_path, class: "mx-2", method: :delete %></li> 
+                <% end %>
             </ul>
+            
+            
         </nav>
 
         <aside class="main-sidebar sidebar-dark-primary elevation-4">

@@ -37,7 +37,7 @@ class UsersController < ApplicationController
     @user.updateTime = Time.now
 
     respond_to do |format|
-      @user.password = params[:password]
+      #@user.password = params[:password]
       if @user.save
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
@@ -84,7 +84,7 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:username, :email, :password, :usertype, :createTime, :updateTime)
+      params.require(:user).permit(:username, :email, :password, :password_confirmation, :usertype, :createTime, :updateTime)
     end
 
     def prepare_user_type_list

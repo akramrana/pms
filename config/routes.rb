@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  get 'sessions/new'
+  get 'sessions/create'
+  get 'sessions/destroy'
   get 'welcome/index'
   root 'welcome#index'
 
@@ -15,6 +18,10 @@ Rails.application.routes.draw do
   get 'issue_checklists/:id/quick_create', :to => 'issue_checklists#quick_create'
   get 'issue_images/:id/quick_create', :to => 'issue_images#quick_create'
 
+  get '/login', to: 'sessions#new'
+  post   '/login', to: 'sessions#create'
+  delete '/logout', to: 'sessions#destroy'
+
   resources :users
   resources :user_types
   resources :issue_types
@@ -25,6 +32,7 @@ Rails.application.routes.draw do
   resources :boards
   resources :issue_checklists
   resources :issue_images
+  resources :sessions, only: [:new, :create, :destroy]
 
 
   
