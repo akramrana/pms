@@ -1,4 +1,5 @@
 class IssueChecklistsController < ApplicationController
+  before_action :logged_in_user
   before_action :set_issue_checklist, only: [:show, :edit, :update, :destroy]
 
   # GET /issue_checklists

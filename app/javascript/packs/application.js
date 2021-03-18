@@ -24,6 +24,7 @@ require("custom/adminlte/js/adminlte")
 require("custom/adminlte/js/pages/dashboard")
 require("custom/adminlte/js/demo")
 require("custom/bootstrap-datepicker/bootstrap-datepicker.min")
+require("custom/iCheck/icheck.min")
 require("packs/app/site")
 
 import site from './app/site'
@@ -38,11 +39,16 @@ window.site = site
 //
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
-jQuery(document).ready(function ($) {
+jQuery(document).on('ready',function ($) {
     // here the $ function is jQuery's because it's an argument
     // to the ready handler
     $('.datepicker').datepicker({
         format: "yyyy-mm-dd",
         autoclose: true
+    });
+    $('input').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        radioClass: 'iradio_square-blue',
+        increaseArea: '20%' /* optional */
     });
 });

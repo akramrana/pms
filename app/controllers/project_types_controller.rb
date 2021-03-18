@@ -1,4 +1,5 @@
 class ProjectTypesController < ApplicationController
+  before_action :logged_in_user
   before_action :set_project_type, only: [:show, :edit, :update, :destroy]
 
   add_breadcrumb "Project Type", :project_types_path

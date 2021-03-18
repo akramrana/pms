@@ -1,5 +1,5 @@
 class IssuesController < ApplicationController
-  
+  before_action :logged_in_user
   add_breadcrumb "Issue", :issues_path
 
   before_action :set_issue, only: [:show, :edit, :update, :destroy, :board_list, :quick_create]
