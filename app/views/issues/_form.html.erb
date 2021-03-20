@@ -53,12 +53,6 @@
                     <%= form.label :dueDate, "Due Date" %>
                     <%= form.text_field :dueDate, class: 'form-control datepicker' %>
                 </div>
-
-                <div class="col-6">
-                    <%= form.label :assignee %>
-                    <%= form.collection_select(:assignee, @users, :id, :username, {:include_blank=> "Please
-                        Select"}, {:class => "form-control"}) %>
-                    </div>
                 </div>
                 <div class="row">
                     <div class="col-6">

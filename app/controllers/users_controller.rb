@@ -35,6 +35,8 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     @user.createTime = Time.now
     @user.updateTime = Time.now
+    @user.createUserId = session[:user_id];
+    @user.updateUserId = session[:user_id];
 
     respond_to do |format|
       #@user.password = params[:password]
@@ -53,6 +55,7 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     @user.updateTime = Time.now
+    @user.updateUserId = session[:user_id];
     respond_to do |format|
       if @user.update(user_params)
         format.html { redirect_to @user, notice: 'User was successfully updated.' }

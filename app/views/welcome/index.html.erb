@@ -1,6 +1,10 @@
 <% content_for :title, "Dashboard" %>
-<div class="row">
-    <div class="col-2">
-
-    </div>
-</div
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    Your last login time was <%= session[:lastLoginTime] %>
+                </div>
+            </div>
+        </div>
+    </div

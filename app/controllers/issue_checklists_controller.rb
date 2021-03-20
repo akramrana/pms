@@ -28,7 +28,7 @@ class IssueChecklistsController < ApplicationController
     @issue_checklist = IssueChecklist.new(issue_checklist_params)
     @issue_checklist.created_at = Time.now
     @issue_checklist.updated_at = Time.now
-    @issue_checklist.user_id = 1;
+    @issue_checklist.user_id = session[:user_id];
     respond_to do |format|
       if @issue_checklist.save
 

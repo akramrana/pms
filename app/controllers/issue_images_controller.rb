@@ -26,7 +26,7 @@ class IssueImagesController < ApplicationController
   # POST /issue_images.json
   def create
     @issue_image = IssueImage.new(issue_image_params)
-    @issue_image.userId = 1;
+    @issue_image.userId = session[:user_id];
     respond_to do |format|
       if @issue_image.save
         

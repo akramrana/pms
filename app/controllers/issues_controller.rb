@@ -44,6 +44,7 @@ class IssuesController < ApplicationController
   def create
     @issue = Issue.new(issue_params)
     @issue.addedTime = Time.now
+    @issue.assignee = session[:user_id]
     @boards = []
     @issueBoardId = '';
 
@@ -137,7 +138,7 @@ class IssuesController < ApplicationController
 
     @issueComment = IssueComment.new()
     @issueComment.issueId = @issue.id
-    @issueComment.userId = 1
+    @issueComment.userId = session[:user_id]
     @issueComment.comment = params[:comment]
     @issueComment.time = Time.now
     @issueComment.save
@@ -160,13 +161,13 @@ class IssuesController < ApplicationController
     @completed = params[:is_checked]
 
     if @completed=='1'
-      @issueChecklist.completed_by = 1;
+      @issueChecklist.completed_by = session[:user_id];
       @issueChecklist.is_completed = 1
       @issueChecklist.save
 
       @issueActivities = IssueActivity.new
       @issueActivities.issue_id = @issue.id
-      @issueActivities.user_id = 1
+      @issueActivities.user_id = session[:user_id]
       @issueActivities.description = 'completed a checklist item'
       @issueActivities.save
     else
@@ -176,7 +177,7 @@ class IssuesController < ApplicationController
 
       @issueActivities = IssueActivity.new
       @issueActivities.issue_id = @issue.id
-      @issueActivities.user_id = 1
+      @issueActivities.user_id = session[:user_id]
       @issueActivities.description = 're-open a checklist item'
       @issueActivities.save
     end
@@ -212,7 +213,7 @@ class IssuesController < ApplicationController
     @issueHistory = IssueHistory.new
     @issueHistory.history_type = @type
     @issueHistory.issue_id = @issue.id
-    @issueHistory.user_id = 1
+    @issueHistory.user_id = session[:user_id]
     @issueHistory.created_at = Time.now
     @issueHistory.save
 
@@ -292,7 +293,7 @@ class IssuesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def issue_params
-      params.require(:issue).permit(:projectId, :issueTypeId, :summary, :priorityTypeId, :dueDate, :assignee, :reporter, :environment, :description, :originalEstimate, :remainEstimate, :boardId)
+      params.require(:issue).permit(:projectId, :issueTypeId, :summary, :priorityTypeId, :dueDate, :reporter, :environment, :description, :originalEstimate, :remainEstimate, :boardId)
     end
 
     def prepare_priority_type
