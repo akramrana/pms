@@ -56,6 +56,8 @@ class IssuesController < ApplicationController
         @boardIssue.issueId = @issue.id
         @boardIssue.save
 
+        AppMailer.add_issue_email(@issue).deliver
+
         
         format.html { redirect_to @issue, notice: 'Issue was successfully created.' }
         format.js
@@ -77,6 +79,8 @@ class IssuesController < ApplicationController
         @boardIssue.boardId = params[:issue][:boardId]
         @boardIssue.issueId = @issue.id
         @boardIssue.save
+
+        AppMailer.edit_issue_email(@issue).deliver
 
         format.html { redirect_to @issue, notice: 'Issue was successfully updated.' }
         format.json { render :show, status: :ok, location: @issue }
