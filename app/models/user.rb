@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
     belongs_to :userType, foreign_key: :usertype, optional: true
 
     has_many :projects
-    has_many :issues
+    has_many :issues, :foreign_key => "assignee"
     has_many :userProject, :foreign_key => "userId"
 
 end

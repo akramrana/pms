@@ -56,4 +56,56 @@
       </div>
     </div>
   </div>
+  <div class="col-12">
+            <h5>User Issues</h5>
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Project</th>
+                                <th>Issue Type</th>
+                                <th>Summary</th>
+                                <th>Priority Type</th>
+                                <th>Reporter</th>
+                                <th>Done?</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% @user.issues.each do |issue| %>
+                                <tr>
+                                    <td>
+                                        <%= issue.project.projectName %>
+                                    </td>
+                                    <td>
+                                        <%= issue.issueType.issueTypeName %>
+                                    </td>
+                                    <td>
+                                        <%= issue.summary %>
+                                    </td>
+                                    <td>
+                                        <%= issue.priorityType.priorityTypeName %>
+                                    </td>
+                                    <td>
+                                        <%= issue.reporterUser.username %>
+                                    </td>
+                                    <td>
+                                        <% if issue.done == 1 %>
+                                           <i class="fa fa-check mr-2 text-success" title="Done"></i>
+                                        <% else %>
+                                           <i class="fa fa-clock mr-2 text-danger" title="Not Done"></i>
+                                        <% end %>
+
+                                    </td>
+                                    <td>
+                                        <%= link_to fa_icon("eye"), issue %>
+                                    </td>
+                                </tr>
+                                <% end %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 </div>

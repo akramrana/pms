@@ -23,4 +23,59 @@
       </div>
     </div>
   </div>
+  <div class="col-12">
+        <h5>Board Issues</h5>
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Project</th>
+                            <th>Issue Type</th>
+                            <th>Summary</th>
+                            <th>Priority Type</th>
+                            <th>Assignee</th>
+                            <th>Reporter</th>
+                            <th>Done?</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @board.board_issues.each do |boardIssue| %>
+                            <tr>
+                                <td>
+                                    <%= boardIssue.issue.project.projectName %>
+                                </td>
+                                <td>
+                                    <%= boardIssue.issue.issueType.issueTypeName %>
+                                </td>
+                                <td>
+                                    <%= boardIssue.issue.summary %>
+                                </td>
+                                <td>
+                                    <%= boardIssue.issue.priorityType.priorityTypeName %>
+                                <td>
+                                    <%= boardIssue.issue.assigneeUser.username %>
+                                </td>
+                                <td>
+                                    <%= boardIssue.issue.reporterUser.username %>
+                                </td>
+                                <td>
+                                    <% if boardIssue.issue.done == 1 %>
+                                       <i class="fa fa-check mr-2 text-success" title="Done"></i>
+                                    <% else %>
+                                       <i class="fa fa-clock mr-2 text-danger" title="Not Done"></i>
+                                    <% end %>
+
+                                </td>
+                                <td>
+                                    <%= link_to fa_icon("eye"), boardIssue.issue %>
+                                </td>
+                            </tr>
+                            <% end %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+  </div>
 </div>

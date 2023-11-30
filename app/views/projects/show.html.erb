@@ -66,10 +66,18 @@
                                             <% board.board_issues.each do |boardIssue| %>
                                                 <li id="issue-<%=boardIssue.issueId;%>" ondragover="site.noAllowDrop(event)" draggable="true" ondragstart="site.drag(event)"
                                                     class="list-group-item">
-                                                    <%=boardIssue.issue.summary;%>
+                                                    <% if boardIssue.issue.done == 1 %>
+                                                       <i class="fa fa-check mr-2 text-success" title="Done"></i>
+                                                    <% else %>
+                                                       <i class="fa fa-clock mr-2 text-danger" title="Not Done"></i>
+                                                    <% end %>
 
-                                                        <%= link_to fa_icon("eye"), boardIssue.issue,
-                                                            class: "float-right" %>
+                                                    <%=boardIssue.issue.summary;%> - <b><%= boardIssue.issue.assigneeUser.username %></b>
+
+
+
+                                                    <%= link_to fa_icon("eye"), boardIssue.issue,class: "float-right" %>
+
                                                 </li>
                                                 <% end %>
                                         </ul>
