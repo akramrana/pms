@@ -10,5 +10,6 @@ class Project < ActiveRecord::Base
     
     has_many :issues
     has_many :boards, -> { where(is_deleted: 0) }, :foreign_key => "projectId"
+    has_many :userProject, :foreign_key => "projectId"
 
 end

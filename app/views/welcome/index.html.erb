@@ -7,4 +7,123 @@
                 </div>
             </div>
         </div>
-    </div
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <h5>Projects</h5>
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Priority</th>
+                                <th>POC</th>
+                                <th>Description</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                         <tbody>
+                             <% @projects.each do |row| %>
+                              <tr>
+                                 <td><%=row.projectName;%></td>
+                                 <td><%=row.priorityType.priorityTypeName;%></td>
+                                 <td><%=row.user.username;%></td>
+                                 <td><%=row.projectDetails;%></td>
+                                 <td>
+                                     <%= link_to fa_icon("eye"), row %>
+                                 </td>
+                               </tr>
+                             <% end %>
+                         </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <h5>Issues</h5>
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Project</th>
+                                <th>Issue Type</th>
+                                <th>Summary</th>
+                                <th>Priority Type</th>
+                                <th>Assignee</th>
+                                <th>Reporter</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% @issues.each do |issue| %>
+                                <tr>
+                                    <td>
+                                        <%= issue.project.projectName %>
+                                    </td>
+                                    <td>
+                                        <%= issue.issueType.issueTypeName %>
+                                    </td>
+                                    <td>
+                                        <%= issue.summary %>
+                                    </td>
+                                    <td>
+                                        <%= issue.priorityType.priorityTypeName %>
+                                    </td>
+                                    <td>
+                                        <%= issue.dueDate %>
+                                    </td>
+                                    <td>
+                                        <%= issue.assigneeUser.username %>
+                                    </td>
+                                    <td>
+                                        <%= issue.reporterUser.username %>
+                                    </td>
+                                    <td>
+                                        <%= link_to fa_icon("eye"), issue %>
+                                    </td>
+                                </tr>
+                                <% end %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6">
+            <h5>Latest Activity</h5>
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Project</th>
+                                <th>Issue</th>
+                                <th>User</th>
+                                <th>Description</th>
+                                <th>DateTime</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% @issueActivities.each do |issueActivity| %>
+                                <tr>
+                                    <td>
+                                        <%= link_to issueActivity.issue.project.projectName, issueActivity.issue.project %>
+                                    </td>
+                                    <td>
+                                        <%= link_to issueActivity.issue.summary, issueActivity.issue %>
+                                    </td>
+                                    <td><%=issueActivity.user.username;%></td>
+                                    <td><%=issueActivity.description;%></td>
+                                    <td><%= issueActivity.created_at %></td>
+                                </tr>
+                            <% end %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>

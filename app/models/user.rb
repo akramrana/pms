@@ -17,6 +17,8 @@ class User < ActiveRecord::Base
     self.primary_key = 'id'
     self.per_page = 20
 
+    attr_accessor :project
+
     validates :username, :email, :usertype, :presence => true
     validates :password, presence: true, length: { minimum: 6 }
 
@@ -24,5 +26,6 @@ class User < ActiveRecord::Base
 
     has_many :projects
     has_many :issues
+    has_many :userProject, :foreign_key => "userId"
 
 end
