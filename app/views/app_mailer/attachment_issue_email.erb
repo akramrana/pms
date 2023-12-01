@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Hi <%= @issueImage.issue.assigneeUser.username %></h1>
+
+    <p>
+      <%= @issueImage.user.username %> added an attachment on a task, which is assigned to you in project <%= @issueImage.issue.project.projectName %>
+    </p>
+
+    <br/>
+
+    <%= image_tag @issueImage.image.thumb.url %>
+
+    <br/>
+
+    <%= link_to "View Task", @issueImage.issue %>
+
+  </body>
+</html>

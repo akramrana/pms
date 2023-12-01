@@ -24,8 +24,8 @@
     </div>
     <div class="row">
         <div class="col-6">
-            <%= form.label :reporter %>
-                <%= form.collection_select(:reporter, @users, :id, :username, {:include_blank=> "Please
+            <%= form.label :assignee %>
+                <%= form.collection_select(:assignee, @users, :id, :username, {:include_blank=> "Please
                     Select"}, {:class => "form-control"}) %>
         </div>
     </div>

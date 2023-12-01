@@ -4,10 +4,10 @@
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
   </head>
   <body>
-    <h1>Hi <%= @issue.reporterUser.username %></h1>
+    <h1>Hi <%= @issue.assigneeUser.username %></h1>
 
     <p>
-      <%= @issue.assigneeUser.username %> updated a task assigned to you in project <%= @issue.project.projectName %>
+      <%= @issue.reporterUser.username %> updated a task assigned to you in project <%= @issue.project.projectName %>
     </p>
 
     <br/>

@@ -38,6 +38,8 @@ class IssueChecklistsController < ApplicationController
         @issueActivities.description = 'added a checklist item '+@issue_checklist.description
         @issueActivities.save
 
+        AppMailer.checklist_issue_email(@issue_checklist, session).deliver
+
         format.html { redirect_to @issue_checklist, notice: 'Issue checklist was successfully created.' }
         format.js
       else

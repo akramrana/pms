@@ -36,6 +36,8 @@ class IssueImagesController < ApplicationController
         @issueActivities.description = 'added an attachment'
         @issueActivities.save
 
+        AppMailer.attachment_issue_email(@issue_image, session).deliver
+
         format.html { redirect_to @issue_image, notice: 'Issue image was successfully created.' }
         format.js
       else

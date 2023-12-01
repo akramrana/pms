@@ -44,7 +44,7 @@ class IssuesController < ApplicationController
   def create
     @issue = Issue.new(issue_params)
     @issue.addedTime = Time.now
-    @issue.assignee = session[:user_id]
+    @issue.reporter = session[:user_id]
     @boards = []
     @issueBoardId = '';
 
@@ -153,6 +153,7 @@ class IssuesController < ApplicationController
     @issueActivities.description = 'added a comment '+@issueComment.comment
     @issueActivities.save
 
+    AppMailer.comment_issue_email(@issueComment, session).deliver
 
     respond_to do |format|
       format.json {render json: @issueComment, status: :ok}
@@ -227,6 +228,10 @@ class IssuesController < ApplicationController
     @issueActivities.description = @comment+' the issue'
     @issueActivities.save
 
+    if @type == 'reopen'
+      AppMailer.reopen_issue_email(@issueHistory, @issue, session).deliver
+    end
+
     respond_to do |format|
       format.json {render json: @issue, status: :ok}
     end
@@ -297,7 +302,7 @@ class IssuesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def issue_params
-      params.require(:issue).permit(:projectId, :issueTypeId, :summary, :priorityTypeId, :dueDate, :reporter, :environment, :description, :originalEstimate, :remainEstimate, :boardId)
+      params.require(:issue).permit(:projectId, :issueTypeId, :summary, :priorityTypeId, :dueDate, :assignee, :environment, :description, :originalEstimate, :remainEstimate, :boardId)
     end
 
     def prepare_priority_type

@@ -7,7 +7,7 @@
     <h1>Hi <%= @issue.assigneeUser.username %></h1>
 
     <p>
-      <%= @issue.reporterUser.username %> assigned you a task in project <%= @issue.project.projectName %>
+      <%= @issueHistory.user.username %> re-open an issue assigned to you, in project <%= @issue.project.projectName %>
     </p>
 
     <br/>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Hi <%= @issueChecklist.issue.assigneeUser.username %></h1>
+
+    <p>
+      <%= @issueChecklist.user.username %> added a checklist item on a task, which is assigned to you in project <%= @issueChecklist.issue.project.projectName %>
+    </p>
+
+    <br/>
+
+    <p>
+    	<%= @issueChecklist.description %>
+    </p>
+
+    <br/>
+
+    <%= link_to "View Task", @issueChecklist.issue %>
+
+  </body>
+</html>

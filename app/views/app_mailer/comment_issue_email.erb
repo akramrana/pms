@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Hi <%= @issueComment.issue.assigneeUser.username %></h1>
+
+    <p>
+      <%= @issueComment.user.username %> commented on a task, which is assigned to you in project <%= @issueComment.issue.project.projectName %>
+    </p>
+
+    <br/>
+
+    <p>
+    	<%= @issueComment.comment %>
+    </p>
+
+    <br/>
+
+    <%= link_to "View Task", @issueComment.issue %>
+
+  </body>
+</html>
