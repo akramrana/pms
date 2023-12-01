@@ -9,7 +9,15 @@ class ProjectsController < ApplicationController
   # GET /projects.json
   def index
     add_breadcrumb "List", projects_path
-    @projects = Project.paginate(page: params[:page]).where(:is_deleted => 0).order('id DESC')
+    if params[:search]
+      wildcard_search = "%#{params[:search]}%"
+      @projects = Project.paginate(page: params[:page])
+                         .joins(:priorityType)
+                         .where("projects.is_deleted = 0 AND (projectName LIKE :search OR projectKey LIKE :search OR projectLeader LIKE :search OR priority_types.priorityTypeName LIKE :search)", search: wildcard_search)
+                         .order('projects.id DESC')
+    else
+      @projects = Project.paginate(page: params[:page]).where(:is_deleted => 0).order('id DESC')
+    end
   end
 
   # GET /projects/1

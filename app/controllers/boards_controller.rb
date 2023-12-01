@@ -9,7 +9,15 @@ class BoardsController < ApplicationController
   # GET /boards.json
   def index
     add_breadcrumb "index", boards_path
-    @boards = Board.paginate(page: params[:page]).where(:is_deleted => 0).order('id DESC')
+    if params[:search]
+      wildcard_search = "%#{params[:search]}%"
+      @boards = Board.paginate(page: params[:page])
+      .joins(:project)
+      .where("boards.is_deleted = 0 AND (boards.boardName LIKE :search OR projects.projectName LIKE :search)",search: wildcard_search)
+      .order('boards.id DESC')
+    else
+      @boards = Board.paginate(page: params[:page]).where(:is_deleted => 0).order('id DESC')
+    end 
   end
 
   # GET /boards/1

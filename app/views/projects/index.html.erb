@@ -3,63 +3,84 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <p id="notice">
-                        <%= notice %>
-                    </p>
-                    <p class="float-right">
-                        <%= link_to 'New Project' , new_project_path, class:"btn btn-success" %>
-                    </p>
-                    <%= page_entries_info @projects %>
-                        <table class="table table-striped table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Key</th>
-                                    <th>Leader</th>
-                                    <th>Priority</th>
-                                    <th>Description</th>
-                                    <th>Time</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                <% @projects.each do |project| %>
-                                    <tr>
-                                        <td>
-                                            <%= project.projectName %>
-                                        </td>
-                                        <td>
-                                            <%= project.projectKey %>
-                                        </td>
-                                        <td>
-                                            <%= project.user.username %>
-                                        </td>
-                                        <td>
-                                            <%= project.priorityType.priorityTypeName %>
-                                        </td>
-                                        <td>
-                                            <%= project.projectDetails %>
-                                        </td>
-                                        <td>
-                                            <%= project.time %>
-                                        </td>
-                                        <td>
-                                            <%= link_to fa_icon("eye"), project %>
-                                                <%= link_to fa_icon("pen"), edit_project_path(project) %>
-                                                    <%= link_to fa_icon("trash"), project, method: :delete, data: {
-                                                        confirm: 'Are you sure?' } %>
-                                        </td>
-                                    </tr>
-                                    <% end %>
-                            </tbody>
-                        </table>
-                        <div class="clearfix">&nbsp;</div>
-                        <div class="row">
-                            <div class="col-12">
-                                <%= will_paginate @clients, list_classes: %w(pagination justify-content-center) %>
-                            </div>
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <p id="notice">
+                                <%= notice %>
+                            </p>
+                            <%= form_tag(projects_path, method: :get) do %>
+                                <div class="row g-3 align-items-center">
+                                    <div class="col-auto">
+                                      <%= text_field_tag(:search, params[:search], class: 'form-control', placeholder: "Search") %>
+                                    </div>
+                                    <div class="col-auto">
+                                      <%= submit_tag "Filter", class: "btn btn-success" %>
+                                    </div>
+                                </div>
+                            <% end %>
                         </div>
+                        <div class="col-6">
+                            <p class="float-right">
+                                <%= link_to 'New Project' , new_project_path, class:"btn btn-success" %>
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Key</th>
+                                <th>Leader</th>
+                                <th>Priority</th>
+                                <th>Description</th>
+                                <th>Time</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <% @projects.each do |project| %>
+                                <tr>
+                                    <td>
+                                        <%= project.projectName %>
+                                    </td>
+                                    <td>
+                                        <%= project.projectKey %>
+                                    </td>
+                                    <td>
+                                        <%= project.user.username %>
+                                    </td>
+                                    <td>
+                                        <%= project.priorityType.priorityTypeName %>
+                                    </td>
+                                    <td>
+                                        <%= project.projectDetails %>
+                                    </td>
+                                    <td>
+                                        <%= project.time %>
+                                    </td>
+                                    <td>
+                                        <%= link_to fa_icon("eye"), project %>
+                                            <%= link_to fa_icon("pen"), edit_project_path(project) %>
+                                                <%= link_to fa_icon("trash"), project, method: :delete, data: {
+                                                    confirm: 'Are you sure?' } %>
+                                    </td>
+                                </tr>
+                                <% end %>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="7" class="text-right"><%= page_entries_info @projects %></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <div class="clearfix">&nbsp;</div>
+                    <div class="row">
+                        <div class="col-12">
+                            <%= will_paginate @clients, list_classes: %w(pagination justify-content-center) %>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
