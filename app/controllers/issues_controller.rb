@@ -12,7 +12,15 @@ class IssuesController < ApplicationController
   # GET /issues.json
   def index
     add_breadcrumb "List", issues_path
-    @issues = Issue.paginate(page: params[:page]).where(:is_deleted => 0).order('id DESC')
+    if params[:search]
+      wildcard_search = "%#{params[:search]}%"
+      @issues = Issue.paginate(page: params[:page])
+                      .joins(:project, :priorityType, :issueType, :assigneeUser, :reporterUser)
+                      .where("issues.is_deleted = 0 AND (priority_types.priorityTypeName LIKE :search OR projects.projectName LIKE :search OR issue_types.issueTypeName LIKE :search OR users.username LIKE :search OR reporterUsers_issues.username LIKE :search)",search: wildcard_search)
+                      .order('issues.id DESC')
+    else
+      @issues = Issue.paginate(page: params[:page]).where(:is_deleted => 0).order('id DESC')
+    end
   end
 
   # GET /issues/1

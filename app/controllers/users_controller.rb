@@ -9,7 +9,17 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     add_breadcrumb "index", users_path
-    @users = User.paginate(page: params[:page]).where(:is_deleted => 0).order('id DESC')
+    if params[:search]
+      search = "%#{params[:search]}%"
+      wildcard_search = search.strip
+
+      @users = User.paginate(page: params[:page])
+                    .joins(:userType)
+                    .where("users.is_deleted = 0 AND (users.username LIKE :search OR users.email LIKE :search OR user_types.userTypeName LIKE :search)",search: wildcard_search)
+                    .order('users.id DESC')
+    else
+      @users = User.paginate(page: params[:page]).where(:is_deleted => 0).order('id DESC')
+    end
   end
 
   # GET /users/1

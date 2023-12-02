@@ -1,4 +1,4 @@
-class UserProject < ApplicationRecord:Base
+class UserProject < ActiveRecord::Base
 
 	self.table_name = 'user_projects'
     self.primary_key = 'id'

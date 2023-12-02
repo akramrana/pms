@@ -201,6 +201,19 @@ var site = {
                 console.log(jqXHR.responseText);
             });
         }
+    },
+    addProjectCoordinator:function(projectId){
+        $.ajax({
+            type: "GET",
+            url: "/user_projects/" + projectId + "/quick_create",
+        }).done(function (res) {
+            //console.log(res);
+            $("#ajax-poc-form").html(res);
+            $("#user_project_projectId").val(projectId);
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR.responseText);
+        });
+        $("#pocModal").modal("show");
     }
 }
 export default site;

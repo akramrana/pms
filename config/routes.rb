@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   post 'issues/:id/delete_comment', :to => 'issues#delete_comment'
   get 'issue_checklists/:id/quick_create', :to => 'issue_checklists#quick_create'
   get 'issue_images/:id/quick_create', :to => 'issue_images#quick_create'
+  get 'user_projects/:id/quick_create', :to => 'user_projects#quick_create'
 
   get '/sessions', to: 'sessions#new'
   get '/login', to: 'sessions#new'
@@ -34,6 +35,7 @@ Rails.application.routes.draw do
   resources :issue_checklists
   resources :issue_images
   resources :sessions, only: [:new, :create, :destroy]
+  resources :user_projects
 
 
   

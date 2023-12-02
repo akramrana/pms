@@ -1,0 +1,17 @@
+<%= form_with(model: @userProject, data: { type: "json" }, remote: true) do |form| %>
+    <div id="error_explanation"></div>
+
+    <div class="row">
+        <div class="col-12">
+            <%= form.hidden_field :projectId %>
+
+            <%= form.label :userId, "Select POC" %>
+            <%= form.collection_select(:userId, @users, :id, :username, {:include_blank=> "Please
+                            Select"}, {:class => "form-control"}) %>
+        </div>
+    </div>
+    <div class="clearfix">&nbsp;</div>
+    <div class="form-group">
+        <%= form.submit 'Submit' , :class=> "btn btn-primary" %>
+    </div>
+<% end %>
