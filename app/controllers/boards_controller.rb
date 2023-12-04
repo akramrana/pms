@@ -9,14 +9,25 @@ class BoardsController < ApplicationController
   # GET /boards.json
   def index
     add_breadcrumb "index", boards_path
+
+    @projectsArr = [];
+    if session[:usertype]== 2
+      @userProjects = UserProject.where(userId:session[:user_id])
+      @userProjects.each do |up|
+        @projectsArr.push(up.projectId)
+      end
+    end
+
     if params[:search]
       wildcard_search = "%#{params[:search]}%"
       @boards = Board.paginate(page: params[:page])
-      .joins(:project)
-      .where("boards.is_deleted = 0 AND (boards.boardName LIKE :search OR projects.projectName LIKE :search)",search: wildcard_search)
-      .order('boards.id DESC')
+                     .joins(:project)
+                     .where("boards.is_deleted = 0 AND (boards.boardName LIKE :search OR projects.projectName LIKE :search)",search: wildcard_search)
+                     .order('boards.id DESC')
+      @boards = @boards.where(:projectId => @projectsArr) if session[:usertype]== 2
     else
       @boards = Board.paginate(page: params[:page]).where(:is_deleted => 0).order('id DESC')
+      @boards = @boards.where(:projectId => @projectsArr) if session[:usertype]== 2
     end 
   end
 
@@ -100,7 +111,15 @@ class BoardsController < ApplicationController
     end
 
     def prepare_project_list
+      @projectsArr = [];
+      if session[:usertype]== 2
+        @userProjects = UserProject.where(userId:session[:user_id])
+        @userProjects.each do |up|
+          @projectsArr.push(up.projectId)
+        end
+      end
       @projects = Project.all
+      @projects = @projects.where(:id => @projectsArr) if session[:usertype]== 2
     end
 
 end

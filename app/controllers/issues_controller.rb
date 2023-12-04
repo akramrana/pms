@@ -12,14 +12,27 @@ class IssuesController < ApplicationController
   # GET /issues.json
   def index
     add_breadcrumb "List", issues_path
+    
+    @projectsArr = [];
+    if session[:usertype]== 2
+      @userProjects = UserProject.where(userId:session[:user_id])
+      @userProjects.each do |up|
+        @projectsArr.push(up.projectId)
+      end
+    end
+
     if params[:search]
       wildcard_search = "%#{params[:search]}%"
       @issues = Issue.paginate(page: params[:page])
                       .joins(:project, :priorityType, :issueType, :assigneeUser, :reporterUser)
                       .where("issues.is_deleted = 0 AND (priority_types.priorityTypeName LIKE :search OR projects.projectName LIKE :search OR issue_types.issueTypeName LIKE :search OR users.username LIKE :search OR reporterUsers_issues.username LIKE :search)",search: wildcard_search)
                       .order('issues.id DESC')
+      @issues = @issues.where(:projectId => @projectsArr) if session[:usertype]== 2
     else
-      @issues = Issue.paginate(page: params[:page]).where(:is_deleted => 0).order('id DESC')
+      @issues = Issue.paginate(page: params[:page])
+                    .where(:is_deleted => 0)
+                    .order('id DESC')
+      @issues = @issues.where(:projectId => @projectsArr) if session[:usertype]== 2
     end
   end
 
@@ -318,7 +331,8 @@ class IssuesController < ApplicationController
     end
 
     def prepare_user_list
-      @users = User.where(usertype: '2').all
+      @users = User.where(is_deleted: 0).all
+      @users = @users.where.not(usertype: '1')
     end
     
     def prepare_issue_type
@@ -326,7 +340,15 @@ class IssuesController < ApplicationController
     end
     
     def prepare_project_list
+      @projectsArr = [];
+      if session[:usertype]== 2
+        @userProjects = UserProject.where(userId:session[:user_id])
+        @userProjects.each do |up|
+          @projectsArr.push(up.projectId)
+        end
+      end
       @projects = Project.all
+      @projects = @projects.where(:id => @projectsArr) if session[:usertype]== 2
     end
 
 

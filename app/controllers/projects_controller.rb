@@ -9,14 +9,26 @@ class ProjectsController < ApplicationController
   # GET /projects.json
   def index
     add_breadcrumb "List", projects_path
+    @projectsArr = [];
+    if session[:usertype]== 2
+      @userProjects = UserProject.where(userId:session[:user_id])
+      @userProjects.each do |up|
+        @projectsArr.push(up.projectId)
+      end
+    end
+
     if params[:search]
       wildcard_search = "%#{params[:search]}%"
       @projects = Project.paginate(page: params[:page])
                          .joins(:priorityType)
                          .where("projects.is_deleted = 0 AND (projectName LIKE :search OR projectKey LIKE :search OR projectLeader LIKE :search OR priority_types.priorityTypeName LIKE :search)", search: wildcard_search)
                          .order('projects.id DESC')
+      @projects = @projects.where(:id => @projectsArr) if session[:usertype]== 2
     else
-      @projects = Project.paginate(page: params[:page]).where(:is_deleted => 0).order('id DESC')
+      @projects = Project.paginate(page: params[:page])
+                          .where(:is_deleted => 0)
+                          .order('id DESC')
+      @projects = @projects.where(:id => @projectsArr) if session[:usertype]== 2
     end
   end
 

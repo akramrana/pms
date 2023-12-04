@@ -116,46 +116,49 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item has-treeview">
-                            <a href="<%= users_path %>" class="nav-link">
-                                <i class="nav-icon fas fa-user"></i>
-                                <p>
-                                    Users
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-header">SETTINGS</li>
-                        <li class="nav-item">
-                            <a href="<%= issue_types_path %>" class="nav-link">
-                                <i class="nav-icon far fa-calendar-alt"></i>
-                                <p>
-                                    Issue Type
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<%= project_types_path %>" class="nav-link">
-                                <i class="nav-icon far fa-image"></i>
-                                <p>
-                                    Project Type
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<%= priority_types_path %>" class="nav-link">
-                                <i class="nav-icon far fa-envelope"></i>
-                                <p>
-                                    Priority Type
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<%= user_types_path %>" class="nav-link">
-                                <i class="nav-icon fas fa-book"></i>
-                                <p>User Type</p>
-                            </a>
-                        </li>
-
+                        <% if session[:usertype]== 1 %>
+                            <li class="nav-item has-treeview">
+                                <a href="<%= users_path %>" class="nav-link">
+                                    <i class="nav-icon fas fa-user"></i>
+                                    <p>
+                                        Users
+                                    </p>
+                                </a>
+                            </li>
+                        <% end %>
+                        <% if session[:usertype]== 1 %>
+                            <li class="nav-header">SETTINGS</li>
+                            <li class="nav-item">
+                                <a href="<%= issue_types_path %>" class="nav-link">
+                                    <i class="nav-icon far fa-calendar-alt"></i>
+                                    <p>
+                                        Issue Type
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="<%= project_types_path %>" class="nav-link">
+                                    <i class="nav-icon far fa-image"></i>
+                                    <p>
+                                        Project Type
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="<%= priority_types_path %>" class="nav-link">
+                                    <i class="nav-icon far fa-envelope"></i>
+                                    <p>
+                                        Priority Type
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="<%= user_types_path %>" class="nav-link">
+                                    <i class="nav-icon fas fa-book"></i>
+                                    <p>User Type</p>
+                                </a>
+                            </li>
+                        <% end %>
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
