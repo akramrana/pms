@@ -214,6 +214,25 @@ var site = {
             console.log(jqXHR.responseText);
         });
         $("#pocModal").modal("show");
+    },
+    remProjectCoordinator:function(projectId,userId,id){
+        var r = confirm('Are you sure?')
+        if (r) {
+            $.ajax({
+                type: "POST",
+                url: "/user_projects/" + id+ "/delete_user",
+                data: {
+                    projectId: projectId,
+                    userId:userId,
+                    id:id,
+                }
+            }).done(function (res) {
+                //console.log(res);
+                location.reload();
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR.responseText);
+            });
+        }
     }
 }
 export default site;

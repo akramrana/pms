@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Hi <%= @userProject.user.username %></h1>
+
+    <p>
+      Project <%= @userProject.project.projectName %> has been assigned you.
+    </p>
+
+    <br/>
+
+    <p>
+    	<%= @userProject.project.projectDetails %>
+    </p>
+
+    <br/>
+
+    <%= link_to "View Project", @userProject.project %>
+
+  </body>
+</html>

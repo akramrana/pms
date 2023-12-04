@@ -62,6 +62,11 @@
                                     <% @project.userProject.each do |up| %>
                                         <li class="list-group-item">
                                             <%=up.user.username;%>
+
+                                            <a onclick="site.remProjectCoordinator(<%=@project.id;%>,<%=up.userId;%>,<%=up.id;%>)"
+                                                href="javascript:;" class="btn btn-xs text-danger float-right">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
                                         </li>
                                     <% end %>
                                 </ul>

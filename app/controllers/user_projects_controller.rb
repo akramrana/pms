@@ -25,6 +25,9 @@ class UserProjectsController < ApplicationController
     @user_project.updated_at = Time.now
     respond_to do |format|
       if @user_project.save
+        
+        AppMailer.user_project_email(@user_project, session).deliver
+
         format.html { redirect_to @user_project, notice: 'Project successfully assigned.' }
         format.js
       else
@@ -45,6 +48,16 @@ class UserProjectsController < ApplicationController
   def quick_create
     @userProject = UserProject.new
     render :layout => false 
+  end
+
+  def delete_user
+    @userProject = UserProject.find_by(id:params[:id],projectId:params[:projectId],userId:params[:userId])
+    Rails.logger.debug @userProject.inspect
+    @userProject.destroy
+    respond_to do |format|
+      format.json {render json: @issue, status: :ok}
+    end
+
   end
 
   private

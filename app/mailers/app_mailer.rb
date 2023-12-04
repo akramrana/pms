@@ -65,4 +65,11 @@ class AppMailer < ApplicationMailer
 
   end
 
+  def user_project_email(userProject,session)
+    @userProject = userProject
+    @session = session
+    @subject = 'PMS: Project '+@userProject.project.projectName+' has been assigned to you ';
+    mail(to: @userProject.user.email, subject: @subject)
+  end
+
 end
