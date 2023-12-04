@@ -27,7 +27,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>Leader</th>
+                                <th>Project Manager</th>
                                 <td>
                                     <%= @project.user.username %>
                                 </td>
@@ -50,11 +50,12 @@
                 <div class="card-body">
                     <h3>
                         Project Coordinators 
-
-                        <a onclick="site.addProjectCoordinator(<%=@project.id;%>)"
-                            href="javascript:;" class="btn btn-xs btn-primary float-right">
-                            <i class="fa fa-plus"></i>
-                        </a>
+                        <% if session[:usertype]== 1 %>
+                            <a onclick="site.addProjectCoordinator(<%=@project.id;%>)"
+                                href="javascript:;" class="btn btn-xs btn-primary float-right">
+                                <i class="fa fa-plus"></i>
+                            </a>
+                        <% end %>
                     </h3>
                     <div class="row">
                         <div class="col-12">
@@ -63,10 +64,12 @@
                                         <li class="list-group-item">
                                             <%=up.user.username;%>
 
-                                            <a onclick="site.remProjectCoordinator(<%=@project.id;%>,<%=up.userId;%>,<%=up.id;%>)"
-                                                href="javascript:;" class="btn btn-xs text-danger float-right">
-                                                <i class="fa fa-trash"></i>
-                                            </a>
+                                            <% if session[:usertype]== 1 %>
+                                                <a onclick="site.remProjectCoordinator(<%=@project.id;%>,<%=up.userId;%>,<%=up.id;%>)"
+                                                    href="javascript:;" class="btn btn-xs text-danger float-right">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                            <% end %>
                                         </li>
                                     <% end %>
                                 </ul>

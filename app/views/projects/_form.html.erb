@@ -23,7 +23,7 @@
 </div>
 <div class="row">
     <div class="col-6">
-        <%= form.label :projectLeader, "Leader" %>
+        <%= form.label :projectLeader, "Project Manager" %>
         <%= form.collection_select(:projectLeader, @leaders, :id, :username, {:include_blank => "Please Select"}, {:class => "form-control"}) %>
     </div>
 

@@ -28,11 +28,15 @@ class IssuesController < ApplicationController
                       .where("issues.is_deleted = 0 AND (priority_types.priorityTypeName LIKE :search OR projects.projectName LIKE :search OR issue_types.issueTypeName LIKE :search OR users.username LIKE :search OR reporterUsers_issues.username LIKE :search)",search: wildcard_search)
                       .order('issues.id DESC')
       @issues = @issues.where(:projectId => @projectsArr) if session[:usertype]== 2
+
+      @issues = @issues.where(:assignee => session[:user_id]) if session[:usertype]== 3 || session[:usertype]== 4
     else
       @issues = Issue.paginate(page: params[:page])
                     .where(:is_deleted => 0)
                     .order('id DESC')
       @issues = @issues.where(:projectId => @projectsArr) if session[:usertype]== 2
+
+      @issues = @issues.where(:assignee => session[:user_id]) if session[:usertype]== 3 || session[:usertype]== 4
     end
   end
 

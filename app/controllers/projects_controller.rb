@@ -15,6 +15,11 @@ class ProjectsController < ApplicationController
       @userProjects.each do |up|
         @projectsArr.push(up.projectId)
       end
+    elsif session[:usertype] == 3 || session[:usertype] == 4
+      @userIssues = Issue.where(:assignee => session[:user_id]).group('projectId')
+      @userIssues.each do |ui|
+        @projectsArr.push(ui.projectId)
+      end
     end
 
     if params[:search]
@@ -23,12 +28,12 @@ class ProjectsController < ApplicationController
                          .joins(:priorityType)
                          .where("projects.is_deleted = 0 AND (projectName LIKE :search OR projectKey LIKE :search OR projectLeader LIKE :search OR priority_types.priorityTypeName LIKE :search)", search: wildcard_search)
                          .order('projects.id DESC')
-      @projects = @projects.where(:id => @projectsArr) if session[:usertype]== 2
+      @projects = @projects.where(:id => @projectsArr) if session[:usertype]!= 1
     else
       @projects = Project.paginate(page: params[:page])
                           .where(:is_deleted => 0)
                           .order('id DESC')
-      @projects = @projects.where(:id => @projectsArr) if session[:usertype]== 2
+      @projects = @projects.where(:id => @projectsArr) if session[:usertype]!= 1
     end
   end
 
