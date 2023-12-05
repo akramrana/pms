@@ -4,6 +4,8 @@ class ProjectsController < ApplicationController
   before_action :prepare_priority_type
   before_action :prepare_user_list
 
+  before_action :check_permission, only: [:new, :edit, :update, :destroy]
+
   add_breadcrumb "Project", :projects_path
   # GET /projects
   # GET /projects.json
@@ -40,6 +42,24 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.json
   def show
+    @projectsArr = [];
+    if session[:usertype]== 2
+      @userProjects = UserProject.where(userId:session[:user_id])
+      @userProjects.each do |up|
+        @projectsArr.push(up.projectId)
+      end
+    elsif session[:usertype] == 3 || session[:usertype] == 4
+      @userIssues = Issue.where(:assignee => session[:user_id]).group('projectId')
+      @userIssues.each do |ui|
+        @projectsArr.push(ui.projectId)
+      end
+    end
+    if session[:usertype]!= 1
+      if not @projectsArr.include?(@project.id)
+        flash[:danger] = "Access Denied."
+        redirect_to projects_url
+      end
+    end
     add_breadcrumb @project.projectName
   end
 
@@ -115,6 +135,16 @@ class ProjectsController < ApplicationController
 
     def prepare_user_list
       @leaders = User.where(usertype: '2').all
+    end
+
+    def check_permission
+      if session[:usertype]==3
+        flash[:danger] = "Access Denied."
+        redirect_to projects_url
+      elsif session[:usertype]==4
+        flash[:danger] = "Access Denied."
+        redirect_to projects_url
+      end
     end
 
 end

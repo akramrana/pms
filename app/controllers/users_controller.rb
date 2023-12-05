@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user
+  before_action :logged_in_user, :admin_only
   add_breadcrumb "User", :users_path
 
   before_action :set_user, only: [:show, :edit, :update, :destroy]

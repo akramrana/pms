@@ -1,5 +1,5 @@
 class PriorityTypesController < ApplicationController
-  before_action :logged_in_user
+  before_action :logged_in_user, :admin_only
   before_action :set_priority_type, only: [:show, :edit, :update, :destroy]
 
   add_breadcrumb "Priority Type", :priority_types_path

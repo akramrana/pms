@@ -8,6 +8,8 @@ class IssuesController < ApplicationController
   before_action :prepare_issue_type
   before_action :prepare_project_list
 
+  before_action :check_permission, only: [:destroy]
+
   # GET /issues
   # GET /issues.json
   def index
@@ -43,6 +45,12 @@ class IssuesController < ApplicationController
   # GET /issues/1
   # GET /issues/1.json
   def show
+    if session[:usertype] == 3 || session[:usertype] == 4
+      if session[:user_id] != @issue.assignee
+        flash[:danger] = "Access Denied."
+        redirect_to issues_url
+      end
+    end
     add_breadcrumb @issue.id
   end
 
@@ -56,11 +64,25 @@ class IssuesController < ApplicationController
 
   # GET /issues/1/edit
   def edit
+    if session[:usertype] == 3 || session[:usertype] == 4
+      if session[:user_id] != @issue.assignee
+        flash[:danger] = "Access Denied."
+        redirect_to issues_url
+      end
+    end
     add_breadcrumb @issue.id, issue_path
     add_breadcrumb "Update"
     @boards = Board.where(:projectId => @issue.projectId)
+                     .left_joins(:board_issues)
+                     .joins("INNER JOIN issues ON board_issues.issueId = issues.id")
+                     .where("boards.is_deleted = 0")
+                     .order('boards.id DESC')
+                     .group('boards.id')
+    @boards = @boards.where(issues:{:assignee => session[:user_id]}) if session[:usertype]== 3 || session[:usertype]== 4
     @boardissue = BoardIssue.where(:issueId => @issue.id).first
-    @issueBoardId = @boardissue.boardId;
+    if @boardissue
+      @issueBoardId = @boardissue.boardId;
+    end
     #Rails.logger.debug @boardissue.inspect
   end
 
@@ -96,6 +118,12 @@ class IssuesController < ApplicationController
   # PATCH/PUT /issues/1
   # PATCH/PUT /issues/1.json
   def update
+    if session[:usertype] == 3 || session[:usertype] == 4
+      if session[:user_id] != @issue.assignee
+        flash[:danger] = "Access Denied."
+        redirect_to issues_url
+      end
+    end
     @boards = Board.where(:projectId => @issue.projectId)
     respond_to do |format|
       if @issue.update(issue_params)
@@ -120,6 +148,12 @@ class IssuesController < ApplicationController
   # DELETE /issues/1.json
   def destroy
     #@issue.destroy
+    if session[:usertype] == 3 || session[:usertype] == 4
+      if session[:user_id] != @issue.assignee
+        flash[:danger] = "Access Denied."
+        redirect_to issues_url
+      end
+    end
     @issue.attributes = {is_deleted:1}
     @issue.save(validate: false)
 
@@ -134,6 +168,12 @@ class IssuesController < ApplicationController
   def board_list
     respond_to do |format|
       @boards = Board.where(:projectId => params[:id])
+                     .left_joins(:board_issues)
+                     .joins("INNER JOIN issues ON board_issues.issueId = issues.id")
+                     .where("boards.is_deleted = 0")
+                     .order('boards.id DESC')
+                     .group('boards.id')
+      @boards = @boards.where(issues:{:assignee => session[:user_id]}) if session[:usertype]== 3 || session[:usertype]== 4
       format.json{ render :json => @boards }
     end
   end
@@ -337,6 +377,7 @@ class IssuesController < ApplicationController
     def prepare_user_list
       @users = User.where(is_deleted: 0).all
       @users = @users.where.not(usertype: '1')
+      @users = @users.where("usertype IN (3,4)") if session[:usertype]== 3 || session[:usertype]== 4
     end
     
     def prepare_issue_type
@@ -350,10 +391,24 @@ class IssuesController < ApplicationController
         @userProjects.each do |up|
           @projectsArr.push(up.projectId)
         end
+      elsif session[:usertype] == 3 || session[:usertype] == 4
+        @userIssues = Issue.where(:assignee => session[:user_id]).group('projectId')
+        @userIssues.each do |ui|
+          @projectsArr.push(ui.projectId)
+        end
       end
       @projects = Project.all
-      @projects = @projects.where(:id => @projectsArr) if session[:usertype]== 2
+      @projects = @projects.where(:id => @projectsArr) if session[:usertype] != 1
     end
 
+    def check_permission
+      if session[:usertype]==3
+        flash[:danger] = "Access Denied."
+        redirect_to issues_url
+      elsif session[:usertype]==4
+        flash[:danger] = "Access Denied."
+        redirect_to issues_url
+      end
+    end
 
 end

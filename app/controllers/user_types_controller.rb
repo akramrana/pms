@@ -1,5 +1,5 @@
 class UserTypesController < ApplicationController
-  before_action :logged_in_user
+  before_action :logged_in_user, :admin_only
   before_action :set_user_type, only: [:show, :edit, :update, :destroy]
 
   add_breadcrumb "User Type", :user_types_path
