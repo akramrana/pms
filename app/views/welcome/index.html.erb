@@ -1,6 +1,18 @@
 <% content_for :title, "Dashboard" %>
     <div class="row">
         <div class="col-12">
+            <% flash.each do |type, msg| %>
+                <% if type == 'danger' %>
+                  <div class="alert alert-danger">
+                    <%= msg %>
+                  </div>
+                <% end %>
+                <% if type == 'notice' %>
+                  <div class="alert alert-success">
+                    <%= msg %>
+                  </div>
+                <% end %>
+            <% end %>
             <div class="card">
                 <div class="card-body">
                     Your last login time was <%= session[:lastLoginTime] %>

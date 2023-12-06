@@ -2,7 +2,7 @@ class IssuesController < ApplicationController
   before_action :logged_in_user
   add_breadcrumb "Issue", :issues_path
 
-  before_action :set_issue, only: [:show, :edit, :update, :destroy, :board_list, :quick_create]
+  before_action :set_issue, only: [:show, :edit, :update, :destroy, :quick_create]
   before_action :prepare_user_list
   before_action :prepare_priority_type
   before_action :prepare_issue_type
@@ -45,7 +45,17 @@ class IssuesController < ApplicationController
   # GET /issues/1
   # GET /issues/1.json
   def show
-    if session[:usertype] == 3 || session[:usertype] == 4
+    if session[:usertype]== 2
+      @projectsArr = [];
+      @userProjects = UserProject.where(userId:session[:user_id])
+      @userProjects.each do |up|
+        @projectsArr.push(up.projectId)
+      end
+      if not @projectsArr.include?(@issue.projectId)
+        flash[:danger] = "Access Denied."
+        redirect_to issues_url
+      end
+    elsif session[:usertype] == 3 || session[:usertype] == 4
       if session[:user_id] != @issue.assignee
         flash[:danger] = "Access Denied."
         redirect_to issues_url
@@ -64,7 +74,17 @@ class IssuesController < ApplicationController
 
   # GET /issues/1/edit
   def edit
-    if session[:usertype] == 3 || session[:usertype] == 4
+    if session[:usertype]== 2
+      @projectsArr = [];
+      @userProjects = UserProject.where(userId:session[:user_id])
+      @userProjects.each do |up|
+        @projectsArr.push(up.projectId)
+      end
+      if not @projectsArr.include?(@issue.projectId)
+        flash[:danger] = "Access Denied."
+        redirect_to issues_url
+      end
+    elsif session[:usertype] == 3 || session[:usertype] == 4
       if session[:user_id] != @issue.assignee
         flash[:danger] = "Access Denied."
         redirect_to issues_url
@@ -74,7 +94,7 @@ class IssuesController < ApplicationController
     add_breadcrumb "Update"
     @boards = Board.where(:projectId => @issue.projectId)
                      .left_joins(:board_issues)
-                     .joins("INNER JOIN issues ON board_issues.issueId = issues.id")
+                     .joins("LEFT JOIN issues ON board_issues.issueId = issues.id")
                      .where("boards.is_deleted = 0")
                      .order('boards.id DESC')
                      .group('boards.id')
@@ -118,7 +138,17 @@ class IssuesController < ApplicationController
   # PATCH/PUT /issues/1
   # PATCH/PUT /issues/1.json
   def update
-    if session[:usertype] == 3 || session[:usertype] == 4
+    if session[:usertype]== 2
+      @projectsArr = [];
+      @userProjects = UserProject.where(userId:session[:user_id])
+      @userProjects.each do |up|
+        @projectsArr.push(up.projectId)
+      end
+      if not @projectsArr.include?(@issue.projectId)
+        flash[:danger] = "Access Denied."
+        redirect_to issues_url
+      end
+    elsif session[:usertype] == 3 || session[:usertype] == 4
       if session[:user_id] != @issue.assignee
         flash[:danger] = "Access Denied."
         redirect_to issues_url
@@ -148,7 +178,17 @@ class IssuesController < ApplicationController
   # DELETE /issues/1.json
   def destroy
     #@issue.destroy
-    if session[:usertype] == 3 || session[:usertype] == 4
+    if session[:usertype]== 2
+      @projectsArr = [];
+      @userProjects = UserProject.where(userId:session[:user_id])
+      @userProjects.each do |up|
+        @projectsArr.push(up.projectId)
+      end
+      if not @projectsArr.include?(@issue.projectId)
+        flash[:danger] = "Access Denied."
+        redirect_to issues_url
+      end
+    elsif session[:usertype] == 3 || session[:usertype] == 4
       if session[:user_id] != @issue.assignee
         flash[:danger] = "Access Denied."
         redirect_to issues_url
@@ -166,14 +206,13 @@ class IssuesController < ApplicationController
   end
 
   def board_list
-    respond_to do |format|
-      @boards = Board.where(:projectId => params[:id])
+    @boards = Board.where(:projectId => params[:id], :is_deleted => 0)
                      .left_joins(:board_issues)
-                     .joins("INNER JOIN issues ON board_issues.issueId = issues.id")
-                     .where("boards.is_deleted = 0")
+                     .joins("LEFT JOIN issues ON board_issues.issueId = issues.id")
                      .order('boards.id DESC')
                      .group('boards.id')
-      @boards = @boards.where(issues:{:assignee => session[:user_id]}) if session[:usertype]== 3 || session[:usertype]== 4
+    @boards = @boards.where(issues:{:assignee => session[:user_id]}) if session[:usertype]== 3 || session[:usertype]== 4
+    respond_to do |format|
       format.json{ render :json => @boards }
     end
   end

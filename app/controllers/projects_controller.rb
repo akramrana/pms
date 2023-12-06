@@ -71,6 +71,24 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1/edit
   def edit
+    @projectsArr = [];
+    if session[:usertype]== 2
+      @userProjects = UserProject.where(userId:session[:user_id])
+      @userProjects.each do |up|
+        @projectsArr.push(up.projectId)
+      end
+    elsif session[:usertype] == 3 || session[:usertype] == 4
+      @userIssues = Issue.where(:assignee => session[:user_id]).group('projectId')
+      @userIssues.each do |ui|
+        @projectsArr.push(ui.projectId)
+      end
+    end
+    if session[:usertype]!= 1
+      if not @projectsArr.include?(@project.id)
+        flash[:danger] = "Access Denied."
+        redirect_to projects_url
+      end
+    end
     add_breadcrumb @project.projectName, project_path
     add_breadcrumb "Update"
   end
@@ -83,6 +101,14 @@ class ProjectsController < ApplicationController
 
     respond_to do |format|
       if @project.save
+
+        @userProject = UserProject.new()
+        @userProject.projectId = @project.id
+        @userProject.userId = params[:project][:projectLeader]
+        @userProject.created_at = Time.now
+        @userProject.updated_at = Time.now
+        @userProject.save
+
         format.html { redirect_to @project, notice: 'Project was successfully created.' }
         format.json { render :show, status: :created, location: @project }
       else
@@ -95,6 +121,24 @@ class ProjectsController < ApplicationController
   # PATCH/PUT /projects/1
   # PATCH/PUT /projects/1.json
   def update
+    @projectsArr = [];
+    if session[:usertype]== 2
+      @userProjects = UserProject.where(userId:session[:user_id])
+      @userProjects.each do |up|
+        @projectsArr.push(up.projectId)
+      end
+    elsif session[:usertype] == 3 || session[:usertype] == 4
+      @userIssues = Issue.where(:assignee => session[:user_id]).group('projectId')
+      @userIssues.each do |ui|
+        @projectsArr.push(ui.projectId)
+      end
+    end
+    if session[:usertype]!= 1
+      if not @projectsArr.include?(@project.id)
+        flash[:danger] = "Access Denied."
+        redirect_to projects_url
+      end
+    end
     respond_to do |format|
       if @project.update(project_params)
         format.html { redirect_to @project, notice: 'Project was successfully updated.' }
@@ -110,6 +154,24 @@ class ProjectsController < ApplicationController
   # DELETE /projects/1.json
   def destroy
     #@project.destroy
+    @projectsArr = [];
+    if session[:usertype]== 2
+      @userProjects = UserProject.where(userId:session[:user_id])
+      @userProjects.each do |up|
+        @projectsArr.push(up.projectId)
+      end
+    elsif session[:usertype] == 3 || session[:usertype] == 4
+      @userIssues = Issue.where(:assignee => session[:user_id]).group('projectId')
+      @userIssues.each do |ui|
+        @projectsArr.push(ui.projectId)
+      end
+    end
+    if session[:usertype]!= 1
+      if not @projectsArr.include?(@project.id)
+        flash[:danger] = "Access Denied."
+        redirect_to projects_url
+      end
+    end
     @project.attributes = {is_deleted:1}
     @project.save(validate: false)
     respond_to do |format|

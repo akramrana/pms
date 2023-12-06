@@ -23,9 +23,9 @@ class BoardsController < ApplicationController
     if params[:search]
       wildcard_search = "%#{params[:search]}%"
       @boards = Board.paginate(page: params[:page])
-                     .joins(:project)
+                     .left_joins(:project)
                      .left_joins(:board_issue)
-                     .joins("INNER JOIN issues ON board_issues.issueId = issues.id")
+                     .joins("LEFT JOIN issues ON board_issues.issueId = issues.id")
                      .where("boards.is_deleted = 0 AND (boards.boardName LIKE :search OR projects.projectName LIKE :search)",search: wildcard_search)
                      .order('boards.id DESC')
                      .group('boards.id')
@@ -34,9 +34,9 @@ class BoardsController < ApplicationController
       @boards = @boards.where(issues:{:assignee => session[:user_id]}) if session[:usertype]== 3 || session[:usertype]== 4
     else
       @boards = Board.paginate(page: params[:page])
-                     .joins(:project)
+                     .left_joins(:project)
                      .left_joins(:board_issues)
-                     .joins("INNER JOIN issues ON board_issues.issueId = issues.id")
+                     .joins("LEFT JOIN issues ON board_issues.issueId = issues.id")
                      .where("boards.is_deleted = 0")
                      .order('boards.id DESC')
                      .group('boards.id')
@@ -50,7 +50,12 @@ class BoardsController < ApplicationController
   # GET /boards/1.json
   def show
     @projectsArr = [];
-    if session[:usertype] == 3 || session[:usertype] == 4
+    if session[:usertype]== 2
+      @userProjects = UserProject.where(userId:session[:user_id])
+      @userProjects.each do |up|
+        @projectsArr.push(up.projectId)
+      end
+    elsif session[:usertype] == 3 || session[:usertype] == 4
       @userIssues = Issue.where(:assignee => session[:user_id]).group('projectId')
       @userIssues.each do |ui|
         @projectsArr.push(ui.projectId)
@@ -59,7 +64,7 @@ class BoardsController < ApplicationController
     if session[:usertype]!= 1
       if not @projectsArr.include?(@board.projectId)
         flash[:danger] = "Access Denied."
-        redirect_to projects_url
+        redirect_to boards_url
       end
     end
     add_breadcrumb @board.id
@@ -73,6 +78,24 @@ class BoardsController < ApplicationController
 
   # GET /boards/1/edit
   def edit
+    @projectsArr = [];
+    if session[:usertype]== 2
+      @userProjects = UserProject.where(userId:session[:user_id])
+      @userProjects.each do |up|
+        @projectsArr.push(up.projectId)
+      end
+    elsif session[:usertype] == 3 || session[:usertype] == 4
+      @userIssues = Issue.where(:assignee => session[:user_id]).group('projectId')
+      @userIssues.each do |ui|
+        @projectsArr.push(ui.projectId)
+      end
+    end
+    if session[:usertype]!= 1
+      if not @projectsArr.include?(@board.projectId)
+        flash[:danger] = "Access Denied."
+        redirect_to boards_url
+      end
+    end
     add_breadcrumb @board.id, board_path
   end
 
@@ -97,6 +120,24 @@ class BoardsController < ApplicationController
   # PATCH/PUT /boards/1
   # PATCH/PUT /boards/1.json
   def update
+    @projectsArr = [];
+    if session[:usertype]== 2
+      @userProjects = UserProject.where(userId:session[:user_id])
+      @userProjects.each do |up|
+        @projectsArr.push(up.projectId)
+      end
+    elsif session[:usertype] == 3 || session[:usertype] == 4
+      @userIssues = Issue.where(:assignee => session[:user_id]).group('projectId')
+      @userIssues.each do |ui|
+        @projectsArr.push(ui.projectId)
+      end
+    end
+    if session[:usertype]!= 1
+      if not @projectsArr.include?(@board.projectId)
+        flash[:danger] = "Access Denied."
+        redirect_to boards_url
+      end
+    end
     @board = Board.find(params[:id])
     @board.updateTime = Time.now
     respond_to do |format|
@@ -114,6 +155,24 @@ class BoardsController < ApplicationController
   # DELETE /boards/1.json
   def destroy
     #@board.destroy
+    @projectsArr = [];
+    if session[:usertype]== 2
+      @userProjects = UserProject.where(userId:session[:user_id])
+      @userProjects.each do |up|
+        @projectsArr.push(up.projectId)
+      end
+    elsif session[:usertype] == 3 || session[:usertype] == 4
+      @userIssues = Issue.where(:assignee => session[:user_id]).group('projectId')
+      @userIssues.each do |ui|
+        @projectsArr.push(ui.projectId)
+      end
+    end
+    if session[:usertype]!= 1
+      if not @projectsArr.include?(@board.projectId)
+        flash[:danger] = "Access Denied."
+        redirect_to boards_url
+      end
+    end
     @board.attributes = {is_deleted:1}
     @board.save(validate: false)
     respond_to do |format|

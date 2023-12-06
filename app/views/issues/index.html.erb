@@ -2,9 +2,11 @@
     <div class="row">
         <div class="col-md-12">
             <% flash.each do |type, msg| %>
-              <div class="alert alert-danger">
-                <%= msg %>
-              </div>
+                <% if type == 'danger' %>
+                  <div class="alert alert-danger">
+                    <%= msg %>
+                  </div>
+                <% end %>
             <% end %>
             <div class="card">
                 <div class="card-body">
