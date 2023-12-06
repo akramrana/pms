@@ -257,6 +257,15 @@ class IssuesController < ApplicationController
     @issueActivities.description = 'added a comment '+@issueComment.comment
     @issueActivities.save
 
+    @notification = Notification.new
+    @notification.created_at = Time.now
+    @notification.updated_at = Time.now
+    @notification.userId = @issueComment.issue.assignee
+    @notification.projectId = @issueComment.issue.projectId
+    @notification.description = @issueComment.user.username+' added a comment.'
+    @notification.issueId = @issueComment.issueId
+    @notification.save
+
     AppMailer.comment_issue_email(@issueComment, session).deliver
 
     respond_to do |format|

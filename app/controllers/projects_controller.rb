@@ -109,6 +109,16 @@ class ProjectsController < ApplicationController
         @userProject.updated_at = Time.now
         @userProject.save
 
+        @notification = Notification.new
+        @notification.created_at = Time.now
+        @notification.updated_at = Time.now
+        @notification.userId = params[:project][:projectLeader]
+        @notification.projectId = @project.id
+        @notification.description = "Project "+@project.projectName+" assigned to you."
+        @notification.save
+
+        AppMailer.user_project_email(@userProject, session).deliver
+
         format.html { redirect_to @project, notice: 'Project was successfully created.' }
         format.json { render :show, status: :created, location: @project }
       else

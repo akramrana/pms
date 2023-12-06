@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Userid:</strong>
+  <%= @notification.userId %>
+</p>
+
+<p>
+  <strong>Projectid:</strong>
+  <%= @notification.projectId %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @notification.description %>
+</p>
+
+<p>
+  <strong>Isread:</strong>
+  <%= @notification.isRead %>
+</p>
+
+<p>
+  <strong>Createdat:</strong>
+  <%= @notification.createdAt %>
+</p>
+
+<p>
+  <strong>Updatedat:</strong>
+  <%= @notification.updatedAt %>
+</p>
+
+<p>
+  <strong>Isdeleted:</strong>
+  <%= @notification.isDeleted %>
+</p>
+
+<%= link_to 'Edit', edit_notification_path(@notification) %> |
+<%= link_to 'Back', notifications_path %>

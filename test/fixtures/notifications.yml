@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  userId: 1
+  projectId: 1
+  description: MyText
+  isRead: 1
+  createdAt: 2023-12-06 18:01:13
+  updatedAt: 2023-12-06 18:01:13
+  isDeleted: 1
+
+two:
+  userId: 1
+  projectId: 1
+  description: MyText
+  isRead: 1
+  createdAt: 2023-12-06 18:01:13
+  updatedAt: 2023-12-06 18:01:13
+  isDeleted: 1

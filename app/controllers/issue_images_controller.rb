@@ -36,6 +36,15 @@ class IssueImagesController < ApplicationController
         @issueActivities.description = 'added an attachment'
         @issueActivities.save
 
+        @notification = Notification.new
+        @notification.created_at = Time.now
+        @notification.updated_at = Time.now
+        @notification.userId = @issue_image.issue.assignee
+        @notification.projectId = @issue_image.issue.projectId
+        @notification.description = @issue_image.user.username+' added an attachment.'
+        @notification.issueId = @issue_image.issueId
+        @notification.save
+
         AppMailer.attachment_issue_email(@issue_image, session).deliver
 
         format.html { redirect_to @issue_image, notice: 'Issue image was successfully created.' }

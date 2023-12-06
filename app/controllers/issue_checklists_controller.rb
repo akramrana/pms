@@ -38,6 +38,15 @@ class IssueChecklistsController < ApplicationController
         @issueActivities.description = 'added a checklist item '+@issue_checklist.description
         @issueActivities.save
 
+        @notification = Notification.new
+        @notification.created_at = Time.now
+        @notification.updated_at = Time.now
+        @notification.userId = @issue_checklist.issue.assignee
+        @notification.projectId = @issue_checklist.issue.projectId
+        @notification.description = @issue_checklist.user.username+' added a checklist item.'
+        @notification.issueId = @issue_checklist.issue_id
+        @notification.save
+
         AppMailer.checklist_issue_email(@issue_checklist, session).deliver
 
         format.html { redirect_to @issue_checklist, notice: 'Issue checklist was successfully created.' }

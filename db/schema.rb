@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_11_23_061440) do
+ActiveRecord::Schema.define(version: 2023_12_06_120113) do
 
   create_table "board_issues", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.integer "boardId", null: false
@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(version: 2023_11_23_061440) do
     t.integer "issueId", null: false
     t.string "image", limit: 250, null: false
     t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.integer "is_deleted", limit: 2, default: 0, null: false
     t.index ["issueId"], name: "issue_images_FK"
     t.index ["userId"], name: "issue_images_FK_1"
   end
@@ -146,6 +147,18 @@ ActiveRecord::Schema.define(version: 2023_11_23_061440) do
     t.index ["reporter"], name: "issues_FK_4"
   end
 
+  create_table "notifications", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.integer "userId"
+    t.integer "projectId"
+    t.text "description"
+    t.integer "isRead"
+    t.datetime "createdAt"
+    t.datetime "updatedAt"
+    t.integer "isDeleted"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "priority_types", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "priorityTypeName", limit: 100, null: false
     t.integer "is_deleted", default: 0, null: false
@@ -193,6 +206,10 @@ ActiveRecord::Schema.define(version: 2023_11_23_061440) do
   create_table "user_projects", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "projectId", null: false
+    t.integer "userId", null: false
+    t.index ["projectId"], name: "user_projects_FK"
+    t.index ["userId"], name: "user_projects_FK_1"
   end
 
   create_table "user_types", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -245,4 +262,6 @@ ActiveRecord::Schema.define(version: 2023_11_23_061440) do
   add_foreign_key "projects", "priority_types", column: "projectPriority", name: "projects_FK_1", on_delete: :cascade
   add_foreign_key "projects", "users", column: "projectLeader", name: "projects_FK", on_delete: :cascade
   add_foreign_key "user_infos", "users", column: "userId", name: "user_infos_FK", on_delete: :cascade
+  add_foreign_key "user_projects", "projects", column: "projectId", name: "user_projects_FK", on_delete: :cascade
+  add_foreign_key "user_projects", "users", column: "userId", name: "user_projects_FK_1", on_delete: :cascade
 end
