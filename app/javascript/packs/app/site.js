@@ -165,6 +165,8 @@ var site = {
                 location.reload();
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR.responseText);
+                var obj = $.parseJSON(jqXHR.responseText);
+                alert(obj.message);
             });
         }
     },
@@ -182,6 +184,8 @@ var site = {
                 location.reload();
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR.responseText);
+                var obj = $.parseJSON(jqXHR.responseText);
+                alert(obj.message);
             });
         }
     },
@@ -199,6 +203,8 @@ var site = {
                 location.reload();
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR.responseText);
+                var obj = $.parseJSON(jqXHR.responseText);
+                alert(obj.message);
             });
         }
     },

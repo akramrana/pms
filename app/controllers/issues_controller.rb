@@ -2,7 +2,7 @@ class IssuesController < ApplicationController
   before_action :logged_in_user
   add_breadcrumb "Issue", :issues_path
 
-  before_action :set_issue, only: [:show, :edit, :update, :destroy, :quick_create]
+  before_action :set_issue, only: [:show, :edit, :update, :destroy]
   before_action :prepare_user_list
   before_action :prepare_priority_type
   before_action :prepare_issue_type
@@ -335,6 +335,9 @@ class IssuesController < ApplicationController
     if @type == 'reopen'
       AppMailer.reopen_issue_email(@issueHistory, @issue, session).deliver
     end
+    if @type == 'done'
+      AppMailer.done_issue_email(@issueHistory, @issue, session).deliver
+    end
 
     respond_to do |format|
       format.json {render json: @issue, status: :ok}
@@ -346,6 +349,26 @@ class IssuesController < ApplicationController
     @commentId = params[:commentId]
     
     @issueComment = IssueComment.find(@commentId)
+
+    if session[:usertype]== 2
+      @projectsArr = [];
+      @userProjects = UserProject.where(userId:session[:user_id])
+      @userProjects.each do |up|
+        @projectsArr.push(up.projectId)
+      end
+      if not @projectsArr.include?(@issueComment.issue.projectId)
+        render json: {status:0,message:"Access Denied"}, status: :unprocessable_entity
+        return
+      end
+    end
+
+    if session[:usertype] == 3 || session[:usertype] == 4
+      if session[:user_id] !=  @issueComment.userId
+          render json: {status:0,message:"Access Denied"}, status: :unprocessable_entity
+          return
+      end
+    end
+    
     @issueComment.attributes = {is_deleted:1}
     @issueComment.save(validate: false)
 
@@ -365,6 +388,26 @@ class IssuesController < ApplicationController
     @issueCecklistId = params[:issueCecklistId]
     
     @issueChecklist = IssueChecklist.find(@issueCecklistId)
+
+    if session[:usertype]== 2
+      @projectsArr = [];
+      @userProjects = UserProject.where(userId:session[:user_id])
+      @userProjects.each do |up|
+        @projectsArr.push(up.projectId)
+      end
+      if not @projectsArr.include?(@issueChecklist.issue.projectId)
+        render json: {status:0,message:"Access Denied"}, status: :unprocessable_entity
+        return
+      end
+    end
+
+    if session[:usertype] == 3 || session[:usertype] == 4
+      if session[:user_id] !=  @issueChecklist.user_id
+          render json: {status:0,message:"Access Denied"}, status: :unprocessable_entity
+          return
+      end
+    end
+
     @issueChecklist.attributes = {is_deleted:1}
     @issueChecklist.save(validate: false)
 
@@ -384,6 +427,25 @@ class IssuesController < ApplicationController
     @imageId = params[:imageId]
     
     @issueImage = IssueImage.find(@imageId)
+
+    if session[:usertype]== 2
+      @projectsArr = [];
+      @userProjects = UserProject.where(userId:session[:user_id])
+      @userProjects.each do |up|
+        @projectsArr.push(up.projectId)
+      end
+      if not @projectsArr.include?(@issueImage.issue.projectId)
+        render json: {status:0,message:"Access Denied"}, status: :unprocessable_entity
+        return
+      end
+    end
+
+    if session[:usertype] == 3 || session[:usertype] == 4
+      if session[:user_id] !=  @issueImage.userId
+          render json: {status:0,message:"Access Denied"}, status: :unprocessable_entity
+          return
+      end
+    end
     
     @issueActivities = IssueActivity.new
     @issueActivities.issue_id = @issueImage.issueId
@@ -391,7 +453,9 @@ class IssuesController < ApplicationController
     @issueActivities.description = 'deleted an attachment'
     @issueActivities.save
 
-    @issueImage.destroy
+    #@issueImage.destroy
+    @issueImage.attributes = {is_deleted:1}
+    @issueImage.save(validate: false)
 
     respond_to do |format|
       format.json {render json: @issue, status: :ok}

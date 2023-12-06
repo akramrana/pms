@@ -15,7 +15,7 @@ class Issue < ActiveRecord::Base
 
     has_many :issueComment, -> { where(is_deleted: 0) }, :foreign_key => "issueId"
     has_many :issueChecklist, -> { where(is_deleted: 0) }, :foreign_key => "issue_id"
-    has_many :issueImage, :foreign_key => "issueId"
+    has_many :issueImage, -> { where(is_deleted: 0) }, :foreign_key => "issueId"
     has_many :issueActivity, :foreign_key => "issue_id"
 
 end

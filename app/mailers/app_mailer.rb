@@ -62,7 +62,6 @@ class AppMailer < ApplicationMailer
       @subject = 'PMS: '+@issueHistory.user.username+' re-open an issue, assigned to you '+@issue.summary;
       mail(to: @issue.assigneeUser.email, subject: @subject)
     end
-
   end
 
   def user_project_email(userProject,session)
@@ -70,6 +69,17 @@ class AppMailer < ApplicationMailer
     @session = session
     @subject = 'PMS: Project '+@userProject.project.projectName+' has been assigned to you ';
     mail(to: @userProject.user.email, subject: @subject)
+  end
+
+  def done_issue_email(issueHistory,issue,session)
+    @issue = issue
+    @session = session
+    @issueHistory = issueHistory
+
+    if @session[:user_id] != @issue.reporter
+      @subject = 'PMS: '+@issueHistory.user.username+' completed an issue, assigned by you. ';
+      mail(to: @issue.reporterUser.email, subject: @subject)
+    end
   end
 
 end

@@ -82,9 +82,18 @@
                                                             <small><%= issueChecklist.created_at %></small>
                                                         </div>
                                                         <div class="col-1">
-                                                            <a onclick="site.deleteChecklistItem(<%=issueChecklist.issue_checklist_id;%>,<%=@issue.id;%>)" href="javascript:;" class="float-right">
-                                                                <i class="fa fa-trash"></i>
-                                                            </a>
+
+                                                            <% if session[:usertype] == 3 || session[:usertype] == 4 %>
+                                                               <%  if session[:user_id] == issueChecklist.user_id %>
+                                                                   <a onclick="site.deleteChecklistItem(<%=issueChecklist.issue_checklist_id;%>,<%=@issue.id;%>)" href="javascript:;" class="float-right">
+                                                                        <i class="fa fa-trash"></i>
+                                                                    </a>
+                                                               <% end %>
+                                                            <% else %>
+                                                                <a onclick="site.deleteChecklistItem(<%=issueChecklist.issue_checklist_id;%>,<%=@issue.id;%>)" href="javascript:;" class="float-right">
+                                                                    <i class="fa fa-trash"></i>
+                                                                </a>
+                                                            <% end %>
                                                         </div>
                                                     </div>
                                                 </li>
@@ -112,9 +121,17 @@
                                                     <a download href="<%= issueImage.image.url %>">
                                                         <%= image_tag issueImage.image.thumb.url %>
                                                     </a>
-                                                    <a onclick="site.deleteAttachment(<%= issueImage.id %>,<%=@issue.id;%>)" href="javascript:;" class="float-right">
-                                                        <i class="fa fa-trash"></i>
-                                                    </a>
+                                                    <% if session[:usertype] == 3 || session[:usertype] == 4 %>
+                                                        <%  if session[:user_id] == issueImage.userId %>
+                                                            <a onclick="site.deleteAttachment(<%= issueImage.id %>,<%=@issue.id;%>)" href="javascript:;" class="float-right">
+                                                                <i class="fa fa-trash"></i>
+                                                            </a>
+                                                        <% end %>
+                                                    <% else %>
+                                                        <a onclick="site.deleteAttachment(<%= issueImage.id %>,<%=@issue.id;%>)" href="javascript:;" class="float-right">
+                                                            <i class="fa fa-trash"></i>
+                                                        </a>
+                                                    <% end %>
                                                     <br/>
                                                     <small><%= issueImage.created_at %></small>
                                                 </li>
@@ -139,9 +156,17 @@
                                                             </b>
                                                             <%=issueComment.comment;%>
 
-                                                            <a onclick="site.deleteComment(<%= issueComment.id %>,<%=@issue.id;%>)" href="javascript:;" class="float-right">
-                                                                <i class="fa fa-trash"></i>
-                                                            </a>
+                                                            <% if session[:usertype] == 3 || session[:usertype] == 4 %>
+                                                                <%  if session[:user_id] == issueComment.userId %>
+                                                                    <a onclick="site.deleteComment(<%= issueComment.id %>,<%=@issue.id;%>)" href="javascript:;" class="float-right">
+                                                                        <i class="fa fa-trash"></i>
+                                                                    </a>
+                                                                <% end %>
+                                                            <% else %>
+                                                                <a onclick="site.deleteComment(<%= issueComment.id %>,<%=@issue.id;%>)" href="javascript:;" class="float-right">
+                                                                    <i class="fa fa-trash"></i>
+                                                                </a>
+                                                            <% end %>
                                                             <br/>
                                                             <small><%= issueComment.time %></small>
                                                         </li>

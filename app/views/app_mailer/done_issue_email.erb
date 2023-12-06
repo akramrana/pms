@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Hi <%= @issue.reporterUser.username %></h1>
+
+    <p>
+      <%= @issueHistory.user.username %> completed an issue assigned by you, in project <%= @issue.project.projectName %>
+    </p>
+
+    <br/>
+
+    <p>
+    	<%= @issue.description %>
+    </p>
+
+    <br/>
+
+    <%= link_to "View Task", @issue %>
+
+  </body>
+</html>
