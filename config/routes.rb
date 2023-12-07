@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :notifications
+  
   get 'sessions/new'
   get 'sessions/create'
   get 'sessions/destroy'
@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   get 'issue_images/:id/quick_create', :to => 'issue_images#quick_create'
   get 'user_projects/:id/quick_create', :to => 'user_projects#quick_create'
   post 'user_projects/:id/delete_user', :to => 'user_projects#delete_user'
+  get 'notifications/:id/mark_read', :to => 'notifications#mark_read', as: :mark_read_notification
 
   get '/sessions', to: 'sessions#new'
   get '/login', to: 'sessions#new'
@@ -38,6 +39,7 @@ Rails.application.routes.draw do
   resources :issue_images
   resources :sessions, only: [:new, :create, :destroy]
   resources :user_projects
+  resources :notifications
 
 
   

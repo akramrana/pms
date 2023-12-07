@@ -11,7 +11,7 @@
             <%= form_tag(notifications_path, method: :get) do %>
               <div class="row g-3 align-items-center">
                   <div class="col-auto">
-                    <%= select_tag(:isRead, options_for_select([['All',''],["Read",1],["Unread",2]], params[:isRead]), class:"form-control") %>
+                    <%= text_field_tag(:search, params[:search], class: 'form-control', placeholder: "Search") %>
                   </div>
                   <div class="col-auto">
                     <%= submit_tag "Filter", class: "btn btn-success" %>
@@ -24,6 +24,7 @@
         <table class="table table-striped table-bordered">
           <thead>
             <tr>
+              <th></th>
               <th>User</th>
               <th>Project</th>
               <th>Issue</th>
@@ -36,6 +37,17 @@
           <tbody>
             <% @notifications.each do |notification| %>
               <tr>
+                <td>
+                  <% if session[:usertype]==1 %>
+                    <% if notification.isRead == 0 && notification.userId.nil? %>
+                        <%= link_to fa_icon("circle"), mark_read_notification_path(notification), class: "text-danger"  %>
+                    <% end %>
+                  <% elsif %> 
+                    <% if notification.isRead == 0 %>
+                      <%= link_to fa_icon("circle"), mark_read_notification_path(notification), class: "text-danger"  %>
+                    <% end %>
+                  <% end %>
+                </td>
                 <td>
                   <% if notification.user %>
                     <%= link_to notification.user.username, notification.user %>
