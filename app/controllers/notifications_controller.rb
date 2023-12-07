@@ -1,54 +1,17 @@
 class NotificationsController < ApplicationController
-  before_action :set_notification, only: [:show, :edit, :update, :destroy]
+  before_action :set_notification, only: [:show, :destroy]
 
   # GET /notifications
   # GET /notifications.json
   def index
-    @notifications = Notification.all
+    @notifications = Notification.paginate(page: params[:page])
+                    .where(:isDeleted => 0)
+                    .order('id DESC')
   end
 
   # GET /notifications/1
   # GET /notifications/1.json
   def show
-  end
-
-  # GET /notifications/new
-  def new
-    @notification = Notification.new
-  end
-
-  # GET /notifications/1/edit
-  def edit
-  end
-
-  # POST /notifications
-  # POST /notifications.json
-  def create
-    @notification = Notification.new(notification_params)
-
-    respond_to do |format|
-      if @notification.save
-        format.html { redirect_to @notification, notice: 'Notification was successfully created.' }
-        format.json { render :show, status: :created, location: @notification }
-      else
-        format.html { render :new }
-        format.json { render json: @notification.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /notifications/1
-  # PATCH/PUT /notifications/1.json
-  def update
-    respond_to do |format|
-      if @notification.update(notification_params)
-        format.html { redirect_to @notification, notice: 'Notification was successfully updated.' }
-        format.json { render :show, status: :ok, location: @notification }
-      else
-        format.html { render :edit }
-        format.json { render json: @notification.errors, status: :unprocessable_entity }
-      end
-    end
   end
 
   # DELETE /notifications/1

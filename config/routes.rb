@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   get 'issue_checklists/:id/quick_create', :to => 'issue_checklists#quick_create'
   get 'issue_images/:id/quick_create', :to => 'issue_images#quick_create'
   get 'user_projects/:id/quick_create', :to => 'user_projects#quick_create'
-    post 'user_projects/:id/delete_user', :to => 'user_projects#delete_user'
+  post 'user_projects/:id/delete_user', :to => 'user_projects#delete_user'
 
   get '/sessions', to: 'sessions#new'
   get '/login', to: 'sessions#new'

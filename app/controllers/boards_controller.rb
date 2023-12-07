@@ -108,6 +108,12 @@ class BoardsController < ApplicationController
 
     respond_to do |format|
       if @board.save
+        @notification = Notification.new
+        @notification.created_at = Time.now
+        @notification.updated_at = Time.now
+        @notification.projectId = @board.projectId
+        @notification.description = 'New board '+@board.boardName+' has been created.'
+        @notification.save
         format.html { redirect_to @board, notice: 'Board was successfully created.' }
         format.js
       else

@@ -1,39 +1,77 @@
-<p id="notice"><%= notice %></p>
+<% content_for :title, "Notifications" %>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row mb-3">
+          <div class="col-6">
+            <p id="notice">
+              <%= notice %>
+            </p>
+            <%= form_tag(notifications_path, method: :get) do %>
+              <div class="row g-3 align-items-center">
+                  <div class="col-auto">
+                    <%= select_tag(:isRead, options_for_select([['All',''],["Read",1],["Unread",2]], params[:isRead]), class:"form-control") %>
+                  </div>
+                  <div class="col-auto">
+                    <%= submit_tag "Filter", class: "btn btn-success" %>
+                  </div>
+              </div>
+            <% end %>
+          </div>
+          <div class="col-6"></div>
+        </div>
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Project</th>
+              <th>Issue</th>
+              <th>Description</th>
+              <th>Datetime</th>
+              <th></th>
+            </tr>
+          </thead>
 
-<h1>Notifications</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Userid</th>
-      <th>Projectid</th>
-      <th>Description</th>
-      <th>Isread</th>
-      <th>Createdat</th>
-      <th>Updatedat</th>
-      <th>Isdeleted</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @notifications.each do |notification| %>
-      <tr>
-        <td><%= notification.userId %></td>
-        <td><%= notification.projectId %></td>
-        <td><%= notification.description %></td>
-        <td><%= notification.isRead %></td>
-        <td><%= notification.createdAt %></td>
-        <td><%= notification.updatedAt %></td>
-        <td><%= notification.isDeleted %></td>
-        <td><%= link_to 'Show', notification %></td>
-        <td><%= link_to 'Edit', edit_notification_path(notification) %></td>
-        <td><%= link_to 'Destroy', notification, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Notification', new_notification_path %>
+          <tbody>
+            <% @notifications.each do |notification| %>
+              <tr>
+                <td>
+                  <% if notification.user %>
+                    <%= link_to notification.user.username, notification.user %>
+                  <% end %>
+                </td>
+                <td>
+                  <%= link_to notification.project.projectName, notification.project %>
+                </td>
+                <td>
+                  <% if notification.issue %>
+                    <%= link_to notification.issue.summary, notification.issue %>
+                  <% end %>
+                </td>
+                <td><%= notification.description %></td>
+                <td><%= notification.created_at %></td>
+                <td>
+                  <%= link_to fa_icon("trash"), notification, method: :delete, data: {confirm: 'Are you sure?' } %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+          <tfoot>
+              <tr>
+                  <td colspan="12" class="text-right">
+                      <%= page_entries_info @notifications %>
+                  </td>
+              </tr>
+          </tfoot>
+        </table>
+        <div class="clearfix">&nbsp;</div>
+        <div class="row">
+            <div class="col-12">
+                <%= will_paginate @notifications, list_classes: %w(pagination justify-content-center) %>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

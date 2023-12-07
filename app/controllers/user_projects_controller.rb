@@ -28,6 +28,14 @@ class UserProjectsController < ApplicationController
         
         AppMailer.user_project_email(@user_project, session).deliver
 
+        @notification = Notification.new
+        @notification.created_at = Time.now
+        @notification.updated_at = Time.now
+        @notification.userId = @user_project.userId
+        @notification.projectId = @user_project.projectId
+        @notification.description = "Project "+@user_project.project.projectName+" assigned to you."
+        @notification.save
+
         format.html { redirect_to @user_project, notice: 'Project successfully assigned.' }
         format.js
       else
@@ -52,7 +60,7 @@ class UserProjectsController < ApplicationController
 
   def delete_user
     @userProject = UserProject.find_by(id:params[:id],projectId:params[:projectId],userId:params[:userId])
-    Rails.logger.debug @userProject.inspect
+    #Rails.logger.debug @userProject.inspect
     @userProject.destroy
     respond_to do |format|
       format.json {render json: @issue, status: :ok}

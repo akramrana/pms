@@ -125,6 +125,15 @@ class IssuesController < ApplicationController
 
         AppMailer.add_issue_email(@issue).deliver
 
+        @notification = Notification.new
+        @notification.created_at = Time.now
+        @notification.updated_at = Time.now
+        @notification.userId = @issue.assignee
+        @notification.projectId = @issue.projectId
+        @notification.description = @issue.reporterUser.username+' assigned you an issue.'
+        @notification.issueId = @issue.id
+        @notification.save
+
         
         format.html { redirect_to @issue, notice: 'Issue was successfully created.' }
         format.js
@@ -163,7 +172,16 @@ class IssuesController < ApplicationController
         @boardIssue.issueId = @issue.id
         @boardIssue.save
 
-        AppMailer.edit_issue_email(@issue).deliver
+        AppMailer.edit_issue_email(@issue, session).deliver
+
+        @notification = Notification.new
+        @notification.created_at = Time.now
+        @notification.updated_at = Time.now
+        @notification.userId = @issue.assignee
+        @notification.projectId = @issue.projectId
+        @notification.description = session[:username]+' updated an issue assigned to you.'
+        @notification.issueId = @issue.id
+        @notification.save
 
         format.html { redirect_to @issue, notice: 'Issue was successfully updated.' }
         format.json { render :show, status: :ok, location: @issue }
@@ -235,6 +253,15 @@ class IssuesController < ApplicationController
     @boardIssue.issueId = @issue.id;
     @boardIssue.save
 
+    @notification = Notification.new
+    @notification.created_at = Time.now
+    @notification.updated_at = Time.now
+    @notification.userId = @boardIssue.issue.assignee
+    @notification.projectId = @boardIssue.issue.projectId
+    @notification.description = session[:username]+' has moved the issue to '+@boardIssue.board.boardName
+    @notification.issueId = @issue.id
+    @notification.save
+
     respond_to do |format|
       format.json {render json: @boardIssue, status: :ok}
     end
@@ -288,6 +315,16 @@ class IssuesController < ApplicationController
       @issueActivities.user_id = session[:user_id]
       @issueActivities.description = 'completed a checklist item'
       @issueActivities.save
+
+      @notification = Notification.new
+      @notification.created_at = Time.now
+      @notification.updated_at = Time.now
+      @notification.userId = @issue.reporter
+      @notification.projectId = @issue.projectId
+      @notification.description = @issueActivities.user.username+' completed a checklist item.'
+      @notification.issueId = @issue.id
+      @notification.save
+
     else
       @issueChecklist.completed_by = nil;
       @issueChecklist.is_completed = 0
@@ -298,6 +335,16 @@ class IssuesController < ApplicationController
       @issueActivities.user_id = session[:user_id]
       @issueActivities.description = 're-open a checklist item'
       @issueActivities.save
+
+      @notification = Notification.new
+      @notification.created_at = Time.now
+      @notification.updated_at = Time.now
+      @notification.userId = @issue.assignee
+      @notification.projectId = @issue.projectId
+      @notification.description = @issueActivities.user.username+' re-open a checklist item.'
+      @notification.issueId = @issue.id
+      @notification.save
+
     end
 
     respond_to do |format|
@@ -343,9 +390,37 @@ class IssuesController < ApplicationController
 
     if @type == 'reopen'
       AppMailer.reopen_issue_email(@issueHistory, @issue, session).deliver
+
+      @notification = Notification.new
+      @notification.created_at = Time.now
+      @notification.updated_at = Time.now
+      @notification.userId = @issue.assignee
+      @notification.projectId = @issue.projectId
+      @notification.description = @issueActivities.user.username+' has '+@comment+' the issue assigned to you.'
+      @notification.issueId = @issue.id
+      @notification.save
     end
     if @type == 'done'
       AppMailer.done_issue_email(@issueHistory, @issue, session).deliver
+
+      @notification = Notification.new
+      @notification.created_at = Time.now
+      @notification.updated_at = Time.now
+      @notification.userId = @issue.reporter
+      @notification.projectId = @issue.projectId
+      @notification.description = @issueActivities.user.username+' has '+@comment+' the issue assigned by you.'
+      @notification.issueId = @issue.id
+      @notification.save
+    end
+    if @type == 'start' || @type == 'stop'
+      @notification = Notification.new
+      @notification.created_at = Time.now
+      @notification.updated_at = Time.now
+      @notification.userId = @issue.reporter
+      @notification.projectId = @issue.projectId
+      @notification.description = @issueActivities.user.username+' has '+@comment+' the issue assigned by you.'
+      @notification.issueId = @issue.id
+      @notification.save
     end
 
     respond_to do |format|

@@ -9,10 +9,11 @@ class AppMailer < ApplicationMailer
     mail(to: @issue.assigneeUser.email, subject: @subject)
   end
 
-  def edit_issue_email(issue)
+  def edit_issue_email(issue,session)
   	@issue = issue
+    @session = session
 
-  	@subject = 'PMS: '+@issue.reporterUser.username+' updated an issue, assigned to you '+@issue.summary;
+  	@subject = 'PMS: '+@session[:username]+' updated an issue, assigned to you '+@issue.summary;
     mail(to: @issue.assigneeUser.email, subject: @subject)
   end
 
