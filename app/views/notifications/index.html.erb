@@ -50,7 +50,11 @@
                 </td>
                 <td>
                   <% if notification.user %>
-                    <%= link_to notification.user.username, notification.user %>
+                    <% if session[:usertype]==1 %>
+                      <%= link_to notification.user.username, notification.user %>
+                    <% elsif %> 
+                      <%= notification.user.username %>
+                    <% end %>
                   <% end %>
                 </td>
                 <td>
