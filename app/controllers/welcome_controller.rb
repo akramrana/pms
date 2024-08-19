@@ -12,6 +12,12 @@ class WelcomeController < ApplicationController
       @projects = Project.order("id DESC").where(:is_deleted => 0).limit(5);
       @issues = Issue.where(:is_deleted => 0).limit(5).order('id DESC');
       @boardIssues = BoardIssue.order('count(boardId) DESC').group('boardId').limit(5)
+      @notDoneIssues = Issue.where(:is_deleted => 0, :done => 0).limit(5).order('id DESC');
+
+      @projectCount = Project.where(:is_deleted => 0).count;
+      @boardIssuesCount = BoardIssue.count
+      @openIssuesCount = Issue.where(:is_deleted => 0, :done => 0).count;
+      @doneIssuesCount = Issue.where(:is_deleted => 0, :done => 1).count;
 
     elsif session[:usertype]== 2
       @userProjects = UserProject.where(userId:session[:user_id])
@@ -41,6 +47,24 @@ class WelcomeController < ApplicationController
                               .group('boards.id')
                               .limit(5);
 
+      @notDoneIssues = Issue.where(issues:{:is_deleted => 0, :done => 0},projects:{:id => @projectsArr})
+                      .joins(:project)
+                      .limit(5)
+                      .order('projects.id DESC');
+
+      @projectCount = Project.where(:is_deleted => 0, :id => @projectsArr).count;
+
+      @boardIssuesCount = BoardIssue.joins(:board)
+                              .where(boards:{:projectId => @projectsArr})
+                              .count;
+
+      @openIssuesCount = Issue.where(issues:{:is_deleted => 0, :done => 0},projects:{:id => @projectsArr})
+                              .joins(:project)
+                              .count;
+      
+      @doneIssuesCount = Issue.where(issues:{:is_deleted => 0, :done => 1},projects:{:id => @projectsArr})
+                              .joins(:project)
+                              .count;
       #Rails.logger.debug @projectsArr.inspect
     else
       @userIssues = Issue.where(:assignee => session[:user_id]).group('projectId')
@@ -70,6 +94,25 @@ class WelcomeController < ApplicationController
                               .group('boardId')
                               .limit(5);
 
+      @notDoneIssues = Issue.where(issues:{:is_deleted => 0, :done => 0,:assignee => session[:user_id]})
+                              .joins(:project)
+                              .limit(5)
+                              .order('projects.id DESC');
+
+      @projectCount = Project.where(:is_deleted => 0, :id => @projectsArr).count;
+
+      @boardIssuesCount = BoardIssue
+                              .joins(:issue)
+                              .where(issues:{:assignee => session[:user_id]})
+                              .count;
+
+      @openIssuesCount = Issue.where(issues:{:is_deleted => 0, :done => 0, :assignee => session[:user_id]})
+                              .joins(:project)
+                              .count;                        
+      
+      @doneIssuesCount = Issue.where(issues:{:is_deleted => 0, :done => 1, :assignee => session[:user_id]})
+                              .joins(:project)
+                              .count;                        
     end
   end
 

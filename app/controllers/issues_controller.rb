@@ -23,8 +23,10 @@ class IssuesController < ApplicationController
       end
     end
 
-    if params[:search]
+    if params[:commit]
       wildcard_search = "%#{params[:search]}%"
+      done_search = params[:done];
+
       @issues = Issue.paginate(page: params[:page])
                       .joins(:project, :priorityType, :issueType, :assigneeUser, :reporterUser)
                       .where("issues.is_deleted = 0 AND (priority_types.priorityTypeName LIKE :search OR projects.projectName LIKE :search OR issue_types.issueTypeName LIKE :search OR users.username LIKE :search OR reporterUsers_issues.username LIKE :search)",search: wildcard_search)
@@ -32,6 +34,8 @@ class IssuesController < ApplicationController
       @issues = @issues.where(:projectId => @projectsArr) if session[:usertype]== 2
 
       @issues = @issues.where(:assignee => session[:user_id]) if session[:usertype]== 3 || session[:usertype]== 4
+
+      @issues = @issues.where("issues.done = :done", done: done_search) if params[:done].present?
     else
       @issues = Issue.paginate(page: params[:page])
                     .where(:is_deleted => 0)

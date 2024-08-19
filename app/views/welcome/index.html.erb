@@ -1,29 +1,172 @@
 <% content_for :title, "Dashboard" %>
     <div class="row">
-        <div class="col-12">
+        <div class="col-6">
             <% flash.each do |type, msg| %>
-                <% if type == 'danger' %>
-                  <div class="alert alert-danger">
-                    <%= msg %>
-                  </div>
-                <% end %>
-                <% if type == 'notice' %>
-                  <div class="alert alert-success">
-                    <%= msg %>
-                  </div>
-                <% end %>
-            <% end %>
+                <% if type=='danger' %>
+                    <div class="alert alert-danger">
+                        <%= msg %>
+                    </div>
+                    <% end %>
+                        <% if type=='notice' %>
+                            <div class="alert alert-success">
+                                <%= msg %>
+                            </div>
+                            <% end %>
+                                <% end %>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            Your last login time was <%= session[:lastLoginTime] %>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-info">
+                                                <div class="inner">
+                                                    <h3>
+                                                        <%= @projectCount %>
+                                                    </h3>
+
+                                                    <p>Projects</p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ion ion-bag"></i>
+                                                </div>
+                                                <a href="<%= projects_path %>" class="small-box-footer">More info <i
+                                                        class="fas fa-arrow-circle-right"></i></a>
+                                            </div>
+                                        </div>
+                                        <!-- ./col -->
+                                        <div class="col-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-success">
+                                                <div class="inner">
+                                                    <h3>
+                                                        <%= @doneIssuesCount %>
+                                                    </h3>
+
+                                                    <p>Closed Issues</p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ion ion-stats-bars"></i>
+                                                </div>
+                                                <a href="<%= issues_path(:done => 1,:commit => 'Filter') %>"
+                                                    class="small-box-footer">More info <i
+                                                        class="fas fa-arrow-circle-right"></i></a>
+                                            </div>
+                                        </div>
+                                        <!-- ./col -->
+                                        <div class="col-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-warning">
+                                                <div class="inner">
+                                                    <h3>
+                                                        <%= @openIssuesCount %>
+                                                    </h3>
+
+                                                    <p>Open Issues</p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ion ion-person-add"></i>
+                                                </div>
+                                                <a href="<%= issues_path(:done => 0,:commit => 'Filter') %>" class="small-box-footer">More info <i
+                                                        class="fas fa-arrow-circle-right"></i></a>
+                                            </div>
+                                        </div>
+                                        <!-- ./col -->
+                                        <div class="col-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-primary">
+                                                <div class="inner">
+                                                    <h3>
+                                                        <%= @boardIssuesCount %>
+                                                    </h3>
+
+                                                    <p>Boards</p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ion ion-pie-graph"></i>
+                                                </div>
+                                                <a href="<%= boards_path %>" class="small-box-footer">More info <i
+                                                        class="fas fa-arrow-circle-right"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+        </div>
+        <div class="col-6">
             <div class="card">
+                <div class="card-header">
+                    <h5>Open Issues</h5>
+                </div>
                 <div class="card-body">
-                    Your last login time was <%= session[:lastLoginTime] %>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Project</th>
+                                <th>Issue Type</th>
+                                <th>Summary</th>
+                                <th>Priority Type</th>
+                                <th>Assignee</th>
+                                <th>Reporter</th>
+                                <th>Done?</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% @notDoneIssues.each do |issue| %>
+                                <tr>
+                                    <td>
+                                        <%= issue.project.projectName %>
+                                    </td>
+                                    <td>
+                                        <%= issue.issueType.issueTypeName %>
+                                    </td>
+                                    <td>
+                                        <%= issue.summary %>
+                                    </td>
+                                    <td>
+                                        <%= issue.priorityType.priorityTypeName %>
+                                    <td>
+                                        <%= issue.assigneeUser.username %>
+                                    </td>
+                                    <td>
+                                        <%= issue.reporterUser.username %>
+                                    </td>
+                                    <td>
+                                        <% if issue.done==1 %>
+                                            <i class="fa fa-check mr-2 text-success" title="Done"></i>
+                                            <% else %>
+                                                <i class="fa fa-clock mr-2 text-danger" title="Not Done"></i>
+                                                <% end %>
+
+                                    </td>
+                                    <td>
+                                        <%= link_to fa_icon("eye"), issue %>
+                                    </td>
+                                </tr>
+                                <% end %>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="7">
+                                    <a href="<%= issues_path %>">
+                                        View All
+                                    </a>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-6">
-            <h5>Projects</h5>
             <div class="card">
+                <div class="card-header">
+                    <h5>Projects</h5>
+                </div>
                 <div class="card-body">
                     <table class="table table-bordered">
                         <thead>
@@ -35,35 +178,45 @@
                                 <th></th>
                             </tr>
                         </thead>
-                         <tbody>
-                             <% @projects.each do |row| %>
-                              <tr>
-                                 <td><%=row.projectName;%></td>
-                                 <td><%=row.priorityType.priorityTypeName;%></td>
-                                 <td><%=row.user.username;%></td>
-                                 <td><%=row.projectDetails;%></td>
-                                 <td>
-                                     <%= link_to fa_icon("eye"), row %>
-                                 </td>
-                               </tr>
-                             <% end %>
-                         </tbody>
-                         <tfoot>
-                             <tr>
+                        <tbody>
+                            <% @projects.each do |row| %>
+                                <tr>
+                                    <td>
+                                        <%=row.projectName;%>
+                                    </td>
+                                    <td>
+                                        <%=row.priorityType.priorityTypeName;%>
+                                    </td>
+                                    <td>
+                                        <%=row.user.username;%>
+                                    </td>
+                                    <td>
+                                        <%=row.projectDetails;%>
+                                    </td>
+                                    <td>
+                                        <%= link_to fa_icon("eye"), row %>
+                                    </td>
+                                </tr>
+                                <% end %>
+                        </tbody>
+                        <tfoot>
+                            <tr>
                                 <td colspan="5">
                                     <a href="<%= projects_path %>">
                                         View All
                                     </a>
                                 </td>
-                             </tr>
-                         </tfoot>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
         </div>
         <div class="col-6">
-            <h5>Boards</h5>
             <div class="card">
+                <div class="card-header">
+                    <h5>Boards</h5>
+                </div>
                 <div class="card-body">
                     <table class="table table-bordered">
                         <thead>
@@ -73,26 +226,30 @@
                                 <th></th>
                             </tr>
                         </thead>
-                         <tbody>
-                             <% @boardIssues.each do |row| %>
-                              <tr>
-                                 <td><%=row.board.boardName;%></td>
-                                 <td><%=row.board.project.projectName;%></td>
-                                 <td>
-                                     <%= link_to fa_icon("eye"), row.board %>
-                                 </td>
-                               </tr>
-                             <% end %>
-                         </tbody>
-                         <tfoot>
-                             <tr>
+                        <tbody>
+                            <% @boardIssues.each do |row| %>
+                                <tr>
+                                    <td>
+                                        <%=row.board.boardName;%>
+                                    </td>
+                                    <td>
+                                        <%=row.board.project.projectName;%>
+                                    </td>
+                                    <td>
+                                        <%= link_to fa_icon("eye"), row.board %>
+                                    </td>
+                                </tr>
+                                <% end %>
+                        </tbody>
+                        <tfoot>
+                            <tr>
                                 <td colspan="3">
                                     <a href="<%= boards_path %>">
                                         View All
                                     </a>
                                 </td>
-                             </tr>
-                         </tfoot>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -100,8 +257,10 @@
     </div>
     <div class="row">
         <div class="col-6">
-            <h5>Issues</h5>
             <div class="card">
+                <div class="card-header">
+                    <h5>Issues</h5>
+                </div>
                 <div class="card-body">
                     <table class="table table-bordered">
                         <thead>
@@ -136,12 +295,12 @@
                                     <td>
                                         <%= issue.reporterUser.username %>
                                     </td>
-                                     <td>
-                                        <% if issue.done == 1 %>
-                                           <i class="fa fa-check mr-2 text-success" title="Done"></i>
-                                        <% else %>
-                                           <i class="fa fa-clock mr-2 text-danger" title="Not Done"></i>
-                                        <% end %>
+                                    <td>
+                                        <% if issue.done==1 %>
+                                            <i class="fa fa-check mr-2 text-success" title="Done"></i>
+                                            <% else %>
+                                                <i class="fa fa-clock mr-2 text-danger" title="Not Done"></i>
+                                                <% end %>
 
                                     </td>
                                     <td>
@@ -151,22 +310,24 @@
                                 <% end %>
                         </tbody>
                         <tfoot>
-                             <tr>
+                            <tr>
                                 <td colspan="7">
                                     <a href="<%= issues_path %>">
                                         View All
                                     </a>
                                 </td>
-                             </tr>
-                         </tfoot>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
         </div>
 
         <div class="col-6">
-            <h5>Latest Activity</h5>
             <div class="card">
+                <div class="card-header">
+                    <h5>Activity Stream</h5>
+                </div>
                 <div class="card-body">
                     <table class="table table-bordered">
                         <thead>
@@ -182,26 +343,33 @@
                             <% @issueActivities.each do |issueActivity| %>
                                 <tr>
                                     <td>
-                                        <%= link_to issueActivity.issue.project.projectName, issueActivity.issue.project %>
+                                        <%= link_to issueActivity.issue.project.projectName, issueActivity.issue.project
+                                            %>
                                     </td>
                                     <td>
                                         <%= link_to issueActivity.issue.summary, issueActivity.issue %>
                                     </td>
-                                    <td><%=issueActivity.user.username;%></td>
-                                    <td><%=issueActivity.description;%></td>
-                                    <td><%= issueActivity.created_at %></td>
+                                    <td>
+                                        <%=issueActivity.user.username;%>
+                                    </td>
+                                    <td>
+                                        <%=issueActivity.description;%>
+                                    </td>
+                                    <td>
+                                        <%= issueActivity.created_at %>
+                                    </td>
                                 </tr>
-                            <% end %>
+                                <% end %>
                         </tbody>
                         <tfoot>
-                             <tr>
+                            <tr>
                                 <td colspan="5">
                                     <a href="<%= issues_path %>">
                                         View All
                                     </a>
                                 </td>
-                             </tr>
-                         </tfoot>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
